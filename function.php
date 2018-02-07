@@ -16,7 +16,7 @@ switch ($action) {
 		     $bot_detail=array();
 		     
 		    while($row = $result->fetch_assoc()) {
-		       $bot_detail['message'][]['text']="EmpId:".$row['empid']."Empname:".$row['empname']."Position:".$row['position']."Salary:".$row['salary']."Work:".$row['work'];
+		       $bot_detail['message'][]['text']="Empname=".$row['empname'];
 		    }
 		    echo json_encode($bot_detail);
 		} else {
