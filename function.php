@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
-//session_start();
-//$id=$_SESSION['empid'];
+session_start();
+$id=$_SESSION['empid'];
 if(isset($_POST["action"]))
 $action=$_POST["action"];
 elseif (isset($_GET["action"])) {
@@ -10,7 +10,7 @@ elseif (isset($_GET["action"])) {
 switch ($action) {
 	case 'bot':
 		$data=$_GET;
-		$sql = "SELECT * FROM bot";
+		$sql = "SELECT * FROM bot WHERE empid='$id'";
         $result = $conn->query($sql);
         //echo "asdfgjk";
         //print_r($result->num_rows);
