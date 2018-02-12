@@ -1,7 +1,8 @@
 <?php 
 include 'conn.php';
 
-//session_start();
+session_start();
+
 
 if($_POST)
 {
@@ -13,10 +14,11 @@ $salary=$_POST['salary'];
 $work=$_POST['work'];
 
 $sql="INSERT INTO bot( empid,empname ,position ,salary,work) VALUES ('$id','$name','$position','$salary','$work') ";
-//echo $conn;
+
 $conn->query($sql);
 
 
+ $_SESSION["empid"] = $_POST['empid'];
  
 	echo "success";
 
@@ -37,7 +39,7 @@ $conn->query($sql);
 <body>
 <form  method="post" action="">
 
-EmpId<input type="number" name="empid" placeholder="EMP_ID">require<br><br>
+EmpId<input type="number" name="empid" placeholder="EMP_ID" require><br><br>
 EmpName<input type="text" name="empname" placeholder="EMP_NAME"require><br><br>
 Position<input type="text" name="empositon" placeholder="EMP_POSITION"require><br><br>
 Salary<input type="number" name="salary" placeholder="EMP_SALARY"require><br><br>
