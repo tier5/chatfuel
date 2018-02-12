@@ -19,7 +19,9 @@ $conn->query($sql);
 
 
  $_SESSION["empid"] = $_POST['empid'];
- 
+
+//header('Location: /employee/function.php?action=bot'); 
+
 	echo "success";
 
 
