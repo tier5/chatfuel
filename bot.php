@@ -1,7 +1,7 @@
 <?php 
 include 'conn.php';
 
-session_start();
+//session_start();
 
 
 if($_POST)
@@ -18,7 +18,7 @@ $sql="INSERT INTO bot( empid,empname ,position ,salary,work) VALUES ('$id','$nam
 $conn->query($sql);
 
 
- $_SESSION["empid"] = $_POST['empid'];
+ $//_SESSION["empid"] = $_POST['empid'];
  
 	echo "success";
 
