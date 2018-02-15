@@ -10,7 +10,7 @@ elseif (isset($_GET["action"])) {
 switch ($action) {
 	case 'bot':
 		$data=$_GET;
-		$sql = "SELECT * FROM bot";
+		$sql = "SELECT * FROM bot ";
         $result = $conn->query($sql);
         //echo "asdfgjk";
         //print_r($result->num_rows);
