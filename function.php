@@ -27,7 +27,7 @@ switch ($action) {
 		break;
 
 	case 'url_access':
-	
+
 
 		$data=$_GET;
 		$first_name=$_GET["first_name"];
@@ -43,10 +43,16 @@ switch ($action) {
 		curl_close($curl);
 
 		$user_detail=json_decode($result);
+		if(count($user_detail)==1)
+		{
+			$user_detail["messages"][0]["text"]="Status : ".$user_detail["full_name"]."Status :".$user_detail["full_name"];
+		}
+		else
+    {
 	  $user_detail["messages"][0]["text"]="Full Name : ".$user_detail["full_name"]." Company Name : ".$user_detail["office_name"];
 
 		echo json_encode($user_detail);
-
+		}
 		break;
 	
 	default:
