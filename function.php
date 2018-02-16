@@ -24,6 +24,20 @@ switch ($action) {
 		   return 0;
 		}
 		break;
+
+	case 'url_access':
+
+		$data=$_GET;
+		$first_name=$_GET["first_name"]
+		$last_name=$_GET["last_name"]
+		$c_name=$_GET["c_name"]
+	  
+
+	  $user_detail={}
+
+	  $user_detail["messages"]["text"]="First Name : ".$first_name." Last Name : ".$last_name." Company Name : ".$c_name
+		echo json_encode($user_detail);
+		break;
 	
 	default:
 		echo "no";
