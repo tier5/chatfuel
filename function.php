@@ -1,7 +1,7 @@
 <?php
 include 'conn.php';
 session_start();
-//$id=$_SESSION['empid'];
+
 if(isset($_POST["action"]))
 $action=$_POST["action"];
 elseif (isset($_GET["action"])) {
@@ -12,8 +12,7 @@ switch ($action) {
 		$data=$_GET;
 		$sql = "SELECT * FROM bot ";
         $result = $conn->query($sql);
-        //echo "asdfgjk";
-        //print_r($result->num_rows);
+        
 	  	if ($result->num_rows > 0) {
 		     $bot_detail=array();
 		     

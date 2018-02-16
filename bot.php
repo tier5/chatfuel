@@ -18,9 +18,7 @@ $sql="INSERT INTO bot( empid,empname ,position ,salary,work) VALUES ('$id','$nam
 $conn->query($sql);
 
 
- //$_SESSION["empid"] = $_POST['empid'];
-
-//header('Location: /employee/function.php?action=bot'); 
+ 
 
 	echo "success";
 
