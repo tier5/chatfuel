@@ -27,15 +27,19 @@ switch ($action) {
 
 	case 'url_access':
 
+		echo "afssadfsdfsdf";
+
 		$data=$_GET;
-		$first_name=$_GET["first_name"]
-		$last_name=$_GET["last_name"]
-		$c_name=$_GET["c_name"]
+		$first_name=$_GET["first_name"];
+		$last_name=$_GET["last_name"];
+		$c_name=$_GET["c_name"];
 	  
+		echo $first_name;
+		echo $last_name;
+		echo $c_name;
+	  $user_detail=[];
 
-	  $user_detail={}
-
-	  $user_detail["messages"]["text"]="First Name : ".$first_name." Last Name : ".$last_name." Company Name : ".$c_name
+	  $user_detail["messages"]["text"]="First Name : ".$first_name." Last Name : ".$last_name." Company Name : ".$c_name;
 		echo json_encode($user_detail);
 		break;
 	
