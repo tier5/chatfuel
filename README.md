@@ -1,2 +1,0 @@
-# chatfuel
-chatfuel demo api
