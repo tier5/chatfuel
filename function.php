@@ -37,22 +37,59 @@ switch ($action) {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);
-		print_r($result);
+	  // print_r($result);
+		//exit();
+
+		$user_detail=json_decode($result);
+
+		/*print_r($user_detail);*/
+ 		
+
+    $array1 = json_decode(json_encode($user_detail), True);
+     /*print_r($array1);
+     exit();*/
+
+ 			$user=array();
+	 
+      foreach ($array1 as $key => $value) {
+       $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+		   
+      }
+      
+			
+			echo json_encode($user1);
+			
 		exit();
-		//$user_detail=json_decode($result);curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		if(count($user_detail)==1)
+
+		
+			
+    
+
+		
+
+
+		 //curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		// print_r($user_detail);
+		 
+
+		/*if(count($user_detail)===1)
 		{
-			$user_detail["messages"][0]["text"]="Status : ".$user_detail["full_name"]."Status :".$user_detail["full_name"];
+			
+			$user_detail["messages"][]["text"]="Status : ".$user_detail['first_name']."Status :".$user_detail['last_name']." Status = ".$user_detail['office_name'];
+
+			 
+
 		}
 		else
-    {
-	  $user_detail["messages"][0]["text"]="First Name : ".$user_detail["first_name"]."Last Name : ".$user_detail["last_name"]." Company Name : ".$user_detail["office_name"];
-/*	
-	  $user_detail["messages"][0]["text"]="First Name : ".$user_detail["first_name"]."Last Name : ".$user_detail["last_name"]." Company Name : ".$user_detail["office_name"];*/
+    {*/
+	/*  $user_detail["messages"][]["text"]="First Name = ".$user_detail['first_name']."Last Name = ".$user_detail['last_name']." Company Name = ".$user_detail['office_name'];*/
+	
+	  /*$user_detail["messages"][0]["text"]="First Name : ".$user_detail["first_name"]."Last Name : ".$user_detail["last_name"]." Company Name : ".$user_detail["office_name"];*/
 
 
-		echo json_encode($user_detail);
-		}
+		
+		//}
+		/*echo json_encode($user_detail);*/
 		break;
 	
 	default:
