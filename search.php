@@ -102,6 +102,42 @@ function doRequest($my_url = null) {
 }
 
 function processOutput($resp = null) {
+	$elements = array();
+	$elements_btn_array = array();
+	$messages = array();
+	$attachment_arr = array();
+
+	$btn_obj	= new stdClass();
+	$btn_obj->type ="web_url";
+	$btn_obj->url = "https://tier5.us";
+	$btn_obj->title = "View";
+	array_push($elements_btn_array, $btn_obj);
+
+
+	$elem_objects = new stdClass();
+	$elem_objects->title = "Glvar bot";
+	$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+	$elem_objects->subtitle = "Glvar Search results";
+	$elem_objects->buttons = $elements_btn_array;
+
+	array_push($elements, $elem_objects);
+
+	$payload = new stdClass();
+	$payload->template_type = "list";
+	$payload->top_element_style = "compact";
+	$payload->elements = $elements;
+
+	$attachment = new stdClass();
+	$attachment->type = "template";
+	$attachment->payload = $payload;
+
+	$list_view  = new stdClass();
+	$list_view->messages[] = ['attachment' => $attachment];
+	print_r(json_encode($list_view));
+	exit();
+
+
+
 	$parent 	= array();
 	$msg    	= array();
 	$counter 	= 0;
@@ -127,13 +163,6 @@ function processOutput($resp = null) {
 				$obj  = new stdClass();
 				$obj->messages = $parent;
 				print_r(json_encode($obj));
-				$mm = array('text' =>  "hello world");
-				$pp = array();
-				array_push($pp,$mm);
-
-				$obj22  = new stdClass();
-				$obj22->messages = $parent;
-				print_r(json_encode($obj22));
 			} else {
 				$msg = array('text' =>  "No Search Results!");
 				$parent = array();
