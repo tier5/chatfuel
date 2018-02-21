@@ -22,7 +22,8 @@ try {
 /**
  * This function searches for the realtors
  * @param null
- * @return string|exception
+ * @return string
+ * @throws exception if no search query given or invalid action specified
  */
 function processURL() {
 	$action 			= $_GET['action'];
@@ -73,7 +74,12 @@ function processURL() {
 		}
 	}
 }
-
+/**
+ * This function do the curl request to the realtor api
+ * @param  string $my_url url where request is being made
+ * @return array 
+ * @throws exception if no url has been passed
+ */
 function doRequest($my_url = null) {
 	if (isset($my_url) && strlen($my_url)) {
 		if (!file_exists('log/info.log')) {
@@ -82,14 +88,47 @@ function doRequest($my_url = null) {
 			// get the requested url inside log
 			file_put_contents('log/info.log', "Requested url :: ".BASE_API_URL.$my_url);
 			$curl = curl_init();
-		    curl_setopt($curl, CURLOPT_URL, $my_url);
-		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		    $result = curl_exec($curl);
-		    curl_close($curl);
-		    print_r($result);
+			// Set some options - we are passing in a useragent too here
+			curl_setopt_array($curl, array(
+			    CURLOPT_RETURNTRANSFER => 1,
+			    CURLOPT_URL => BASE_API_URL.$my_url,
+			    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+			));
+			// Send the request & save response to $resp
+			$resp = curl_exec($curl);
+
+			processOutput($resp);
+			// Close request to clear up some resources
+			curl_close($curl);
 		}
 	} else {
 		throw new Exception("No URL has been passed to make a request", 1);
 		
 	}
 }
+
+function processOutput($resp = null) {
+	if (count($resp)) {
+		$resp_arr = json_decode($resp);
+		if (gettype($resp_arr) === 'object') {
+			$msg = array('text' =>  "No Search Results!");
+			$parent = array();
+			array_push($parent,$msg);
+			$obj  = new stdClass();
+			$obj->messages = $parent;
+			print_r(json_encode($obj));
+		} else {
+			foreach ($variable as $key => $value) {
+				# code...
+			}
+		}
+	} else {
+		$msg = array('text' =>  "No Search Results!");
+		$parent = array();
+		array_push($parent,$msg);
+		$obj  = new stdClass();
+		$obj->messages = $parent;
+		print_r(json_encode($obj));
+	}
+}
+
