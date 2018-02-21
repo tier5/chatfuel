@@ -1,12 +1,10 @@
 <?php
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 /**
  * @const BASE_API_URL is the api url which will get hit when we gonna call the function
  */
 const BASE_API_URL = "http://members.lasvegasrealtor.com/search/v1/realtors?";
-
 try {
 	// calling the realtor search api function
 	processURL();
@@ -22,7 +20,8 @@ try {
 /**
  * This function searches for the realtors
  * @param null
- * @return string|exception
+ * @return string
+ * @throws exception if no search query given or invalid action specified
  */
 function processURL() {
 	$action 			= $_GET['action'];
@@ -73,23 +72,79 @@ function processURL() {
 		}
 	}
 }
-
+/**
+ * This function do the curl request to the realtor api
+ * @param  string $my_url url where request is being made
+ * @return array 
+ * @throws exception if no url has been passed
+ */
 function doRequest($my_url = null) {
 	if (isset($my_url) && strlen($my_url)) {
-		if (!file_exists('log/info.log')) {
-			throw new Exception("create a log file log/info.log", 1);
-		} else {
-			// get the requested url inside log
-			file_put_contents('log/info.log', "Requested url :: ".BASE_API_URL.$my_url);
-			$curl = curl_init();
-		    curl_setopt($curl, CURLOPT_URL, $my_url);
-		    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		    $result = curl_exec($curl);
-		    curl_close($curl);
-		    print_r($result);
-		}
+		$curl = curl_init();
+		// Set some options - we are passing in a useragent too here
+		curl_setopt_array($curl, array(
+		    CURLOPT_RETURNTRANSFER => 1,
+		    CURLOPT_URL => BASE_API_URL.$my_url,
+		    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+		));
+		// Send the request & save response to $resp
+		$resp = curl_exec($curl);
+		processOutput($resp);
+		// Close request to clear up some resources
+			curl_close($curl);
 	} else {
 		throw new Exception("No URL has been passed to make a request", 1);
 		
+	}
+}
+function processOutput($resp = null) {
+	$parent 	= array();
+	$msg    	= array();
+	$counter 	= 0;
+	if (count($resp)) {
+		$resp_arr = json_decode($resp);
+		if (gettype($resp_arr) === 'object') {
+			$msg = array('text' =>  "No Search Results!");
+			$parent = array();
+			array_push($parent,$msg);
+			$obj  = new stdClass();
+			$obj->messages = $parent;
+			print_r(json_encode($obj));
+		} else {
+			if (count($resp_arr)) {
+				foreach ($resp_arr as $key => $each_resp) {
+					$counter++;
+					if ($counter <= 10) {
+						$msg  = array("text" => "Full Name: ".$each_resp->full_name." Office Name: ".$each_resp->office_name." Office Phone Number: ".$each_resp->office_phone_number);
+						array_push($parent,$msg);
+					}
+					
+				}
+				$obj  = new stdClass();
+				$obj->messages = $parent;
+				print_r(json_encode($obj));
+				$mm = array('text' =>  "hello world");
+				$pp = array();
+				array_push($pp,$mm);
+				$obj22  = new stdClass();
+				$obj22->messages = $parent;
+				print_r(json_encode($obj22));
+			} else {
+				$msg = array('text' =>  "No Search Results!");
+				$parent = array();
+				array_push($parent,$msg);
+				$obj  = new stdClass();
+				$obj->messages = $parent;
+				print_r(json_encode($obj));
+			}
+			
+		}
+	} else {
+		$msg = array('text' =>  "No Search Results!");
+		$parent = array();
+		array_push($parent,$msg);
+		$obj  = new stdClass();
+		$obj->messages = $parent;
+		print_r(json_encode($obj));
 	}
 }
