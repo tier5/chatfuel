@@ -108,6 +108,8 @@ function doRequest($my_url = null) {
 }
 
 function processOutput($resp = null) {
+	$parent = array();
+	$msg    = array();
 	if (count($resp)) {
 		$resp_arr = json_decode($resp);
 		if (gettype($resp_arr) === 'object') {
@@ -118,9 +120,28 @@ function processOutput($resp = null) {
 			$obj->messages = $parent;
 			print_r(json_encode($obj));
 		} else {
-			foreach ($variable as $key => $value) {
-				# code...
+			// echo "<pre>";
+			// print_r($resp_arr);
+			// exit();
+			if (count($resp_arr)) {
+				foreach ($resp_arr as $key => $each_resp) {
+					// echo "<br/>";
+					// print_r($each_resp);
+					$msg  = array("text" => "Full Name: ".$each_resp->full_name." Office Name: ".$each_resp->office_name." Office Phone Number: ".$each_resp->office_phone_number);
+					array_push($parent,$msg);
+				}
+				$obj  = new stdClass();
+				$obj->messages = $parent;
+				print_r(json_encode($obj));
+			} else {
+				$msg = array('text' =>  "No Search Results!");
+				$parent = array();
+				array_push($parent,$msg);
+				$obj  = new stdClass();
+				$obj->messages = $parent;
+				print_r(json_encode($obj));
 			}
+			
 		}
 	} else {
 		$msg = array('text' =>  "No Search Results!");
