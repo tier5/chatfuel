@@ -113,12 +113,18 @@ function processOutput($resp = null) {
 	$btn_obj->title = "View";
 	array_push($elements_btn_array, $btn_obj);
 
-
+	$default_action = new stdClass();
+	$default_action->type = "web_url";
+	$default_action->url  = "https://tier5.us";
+	$default_action->messenger_extensions = true;
+	$default_action->webview_height_ratio = "compact";
 	$elem_objects1 = new stdClass();
 	$elem_objects1->title = "Glvar bot";
 	$elem_objects1->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
 	$elem_objects1->subtitle = "Glvar Search results";
+	$elem_objects1->default_action = $default_action;
 	$elem_objects1->buttons = $elements_btn_array;
+
 	array_push($elements, $elem_objects1);
 	// $elem_objects2 = new stdClass();
 	// $elem_objects2->title = "Glvar bot2";
