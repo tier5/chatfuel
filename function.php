@@ -49,9 +49,7 @@ switch ($action) {
      
       foreach ($array1 as $key => $value) {
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-		   
-
-      }
+		   }
       
       
 			
@@ -62,23 +60,6 @@ switch ($action) {
 			
     
 		
-		 //curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		// print_r($user_detail);
-		 
-		/*if(count($user_detail)===1)
-		{
-			
-			$user_detail["messages"][]["text"]="Status : ".$user_detail['first_name']."Status :".$user_detail['last_name']." Status = ".$user_detail['office_name'];
-			 
-		}
-		else
-    {
-	/*  $user_detail["messages"][]["text"]="First Name = ".$user_detail['first_name']."Last Name = ".$user_detail['last_name']." Company Name = ".$user_detail['office_name'];*/
-	
-	  /*$user_detail["messages"][0]["text"]="First Name : ".$user_detail["first_name"]."Last Name : ".$user_detail["last_name"]." Company Name : ".$user_detail["office_name"];*/
-		
-		//}
-		/*echo json_encode($user_detail);*/
 		break;
 	
 	default:
