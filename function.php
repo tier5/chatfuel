@@ -45,8 +45,6 @@ switch ($action) {
 	 		echo $arrsize;
 	 		exit();
     
-
-     
       foreach ($array1 as $key => $value) {
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
 		   }
