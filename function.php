@@ -49,11 +49,9 @@ switch ($action) {
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
 		   }
       
-      
-			
 			echo json_encode($user1);
 			
-		exit();
+		  exit();
 		
 			
     
