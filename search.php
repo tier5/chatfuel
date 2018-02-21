@@ -127,6 +127,13 @@ function processOutput($resp = null) {
 				$obj  = new stdClass();
 				$obj->messages = $parent;
 				print_r(json_encode($obj));
+				$mm = array('text' =>  "hello world");
+				$pp = array();
+				array_push($pp,$mm);
+
+				$obj22  = new stdClass();
+				$obj22->messages = $parent;
+				print_r(json_encode($obj22));
 			} else {
 				$msg = array('text' =>  "No Search Results!");
 				$parent = array();
