@@ -128,9 +128,9 @@ function processOutput($resp = null) {
 	// array_push($elements, $elem_objects2);
 
 	$payload = new stdClass();
-	$payload->template_type = "list";
+	$payload->template_type = "generic";
 	$payload->top_element_style = "large";
-	$payload->element = $elements;
+	$payload->elements = $elements;
 
 	$attachment = new stdClass();
 	$attachment->type = "template";
