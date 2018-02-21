@@ -114,17 +114,22 @@ function processOutput($resp = null) {
 	array_push($elements_btn_array, $btn_obj);
 
 
-	$elem_objects = new stdClass();
-	$elem_objects->title = "Glvar bot";
-	$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-	$elem_objects->subtitle = "Glvar Search results";
-	$elem_objects->buttons = $elements_btn_array;
-
-	array_push($elements, $elem_objects);
+	$elem_objects1 = new stdClass();
+	$elem_objects1->title = "Glvar bot";
+	$elem_objects1->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+	$elem_objects1->subtitle = "Glvar Search results";
+	$elem_objects1->buttons = $elements_btn_array;
+	array_push($elements, $elem_objects1);
+	$elem_objects2 = new stdClass();
+	$elem_objects2->title = "Glvar bot2";
+	$elem_objects2->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+	$elem_objects2->subtitle = "Glvar Search results";
+	$elem_objects2->buttons = $elements_btn_array;
+	array_push($elements, $elem_objects2);
 
 	$payload = new stdClass();
 	$payload->template_type = "list";
-	$payload->top_element_style = "compact";
+	$payload->top_element_style = "large";
 	$payload->elements = $elements;
 
 	$attachment = new stdClass();
