@@ -134,52 +134,52 @@ function processOutput($resp = null) {
 	$list_view  = new stdClass();
 	$list_view->messages[] = ['attachment' => $attachment];
 	print_r(json_encode($list_view));
-	exit();
+	// exit();
 
 
 
-	$parent 	= array();
-	$msg    	= array();
-	$counter 	= 0;
-	if (count($resp)) {
-		$resp_arr = json_decode($resp);
-		if (gettype($resp_arr) === 'object') {
-			$msg = array('text' =>  "No Search Results!");
-			$parent = array();
-			array_push($parent,$msg);
-			$obj  = new stdClass();
-			$obj->messages = $parent;
-			print_r(json_encode($obj));
-		} else {
-			if (count($resp_arr)) {
-				foreach ($resp_arr as $key => $each_resp) {
-					$counter++;
-					if ($counter <= 10) {
-						$msg  = array("text" => "Full Name: ".$each_resp->full_name." Office Name: ".$each_resp->office_name." Office Phone Number: ".$each_resp->office_phone_number);
-						array_push($parent,$msg);
-					}
+	// $parent 	= array();
+	// $msg    	= array();
+	// $counter 	= 0;
+	// if (count($resp)) {
+	// 	$resp_arr = json_decode($resp);
+	// 	if (gettype($resp_arr) === 'object') {
+	// 		$msg = array('text' =>  "No Search Results!");
+	// 		$parent = array();
+	// 		array_push($parent,$msg);
+	// 		$obj  = new stdClass();
+	// 		$obj->messages = $parent;
+	// 		print_r(json_encode($obj));
+	// 	} else {
+	// 		if (count($resp_arr)) {
+	// 			foreach ($resp_arr as $key => $each_resp) {
+	// 				$counter++;
+	// 				if ($counter <= 10) {
+	// 					$msg  = array("text" => "Full Name: ".$each_resp->full_name." Office Name: ".$each_resp->office_name." Office Phone Number: ".$each_resp->office_phone_number);
+	// 					array_push($parent,$msg);
+	// 				}
 					
-				}
-				$obj  = new stdClass();
-				$obj->messages = $parent;
-				print_r(json_encode($obj));
-			} else {
-				$msg = array('text' =>  "No Search Results!");
-				$parent = array();
-				array_push($parent,$msg);
-				$obj  = new stdClass();
-				$obj->messages = $parent;
-				print_r(json_encode($obj));
-			}
+	// 			}
+	// 			$obj  = new stdClass();
+	// 			$obj->messages = $parent;
+	// 			print_r(json_encode($obj));
+	// 		} else {
+	// 			$msg = array('text' =>  "No Search Results!");
+	// 			$parent = array();
+	// 			array_push($parent,$msg);
+	// 			$obj  = new stdClass();
+	// 			$obj->messages = $parent;
+	// 			print_r(json_encode($obj));
+	// 		}
 			
-		}
-	} else {
-		$msg = array('text' =>  "No Search Results!");
-		$parent = array();
-		array_push($parent,$msg);
-		$obj  = new stdClass();
-		$obj->messages = $parent;
-		print_r(json_encode($obj));
-	}
+	// 	}
+	// } else {
+	// 	$msg = array('text' =>  "No Search Results!");
+	// 	$parent = array();
+	// 	array_push($parent,$msg);
+	// 	$obj  = new stdClass();
+	// 	$obj->messages = $parent;
+	// 	print_r(json_encode($obj));
+	// }
 }
 
