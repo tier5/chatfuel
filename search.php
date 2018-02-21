@@ -130,7 +130,7 @@ function processOutput($resp = null) {
 	$payload = new stdClass();
 	$payload->template_type = "list";
 	$payload->top_element_style = "large";
-	$payload->element = $elements;
+	$payload->elements = $elements;
 
 	$attachment = new stdClass();
 	$attachment->type = "template";
