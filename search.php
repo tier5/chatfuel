@@ -102,89 +102,77 @@ function doRequest($my_url = null) {
 }
 
 function processOutput($resp = null) {
-	$elements = array();
-	$elements_btn_array = array();
-	$messages = array();
-	$attachment_arr = array();
+	
+	if (count($resp)) {
+		$elements = array();
+		$elements_btn_array = array();
+		$messages = array();
+		$attachment_arr = array();
+		$resp_arr = json_decode($resp);
+		$counter  = 0;
+		// echo "<pre>";
+		// print_r($resp_arr);
+		// exit();
+		if (gettype($resp_arr) === 'object') {
+			$msg = array('text' =>  "No Search Results!");
+			$parent = array();
+			array_push($parent,$msg);
+			$obj  = new stdClass();
+			$obj->messages = $parent;
+			print_r(json_encode($obj));
+		} else {
+			if (count($resp_arr)) {
+				foreach ($resp_arr as $x => $each_resp) {
+					// count iterations
+					$counter++;
+					if ($counter <= 2) {
+					 	// creating buttons for list
+						$btn_obj	= new stdClass();
+						$btn_obj->type ="phone_number";
+						$btn_obj->url = $each_resp->office_phone_number;
+						$btn_obj->title = "Call";
+						array_push($elements_btn_array, $btn_obj);
 
-	$btn_obj	= new stdClass();
-	$btn_obj->type ="web_url";
-	$btn_obj->url = "https://tier5.us";
-	$btn_obj->title = "View";
-	array_push($elements_btn_array, $btn_obj);
+						// creating element object
+						$elem_objects = new stdClass();
+						$elem_objects->title = $each_resp->full_name;
+						$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+						$elem_objects->subtitle = $each_resp->office_name;
+						$elem_objects->buttons = $elements_btn_array;
+						array_push($elements, $elem_objects);
 
+						// payload
+						$payload = new stdClass();
+						$payload->template_type = "list";
+						$payload->top_element_style = "large";
+						$payload->elements = $elements;
 
-	$elem_objects1 = new stdClass();
-	$elem_objects1->title = "Glvar bot";
-	$elem_objects1->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-	$elem_objects1->subtitle = "Glvar Search results";
-	$elem_objects1->buttons = $elements_btn_array;
-	array_push($elements, $elem_objects1);
-	$elem_objects2 = new stdClass();
-	$elem_objects2->title = "Glvar bot2";
-	$elem_objects2->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-	$elem_objects2->subtitle = "Glvar Search results";
-	$elem_objects2->buttons = $elements_btn_array;
-	array_push($elements, $elem_objects2);
-
-	$payload = new stdClass();
-	$payload->template_type = "list";
-	$payload->top_element_style = "large";
-	$payload->elements = $elements;
-
-	$attachment = new stdClass();
-	$attachment->type = "template";
-	$attachment->payload = $payload;
-
-	$list_view  = new stdClass();
-	$list_view->messages[] = ['attachment' => $attachment];
-	print_r(json_encode($list_view));
-	// exit();
-
-
-
-	// $parent 	= array();
-	// $msg    	= array();
-	// $counter 	= 0;
-	// if (count($resp)) {
-	// 	$resp_arr = json_decode($resp);
-	// 	if (gettype($resp_arr) === 'object') {
-	// 		$msg = array('text' =>  "No Search Results!");
-	// 		$parent = array();
-	// 		array_push($parent,$msg);
-	// 		$obj  = new stdClass();
-	// 		$obj->messages = $parent;
-	// 		print_r(json_encode($obj));
-	// 	} else {
-	// 		if (count($resp_arr)) {
-	// 			foreach ($resp_arr as $key => $each_resp) {
-	// 				$counter++;
-	// 				if ($counter <= 10) {
-	// 					$msg  = array("text" => "Full Name: ".$each_resp->full_name." Office Name: ".$each_resp->office_name." Office Phone Number: ".$each_resp->office_phone_number);
-	// 					array_push($parent,$msg);
-	// 				}
-					
-	// 			}
-	// 			$obj  = new stdClass();
-	// 			$obj->messages = $parent;
-	// 			print_r(json_encode($obj));
-	// 		} else {
-	// 			$msg = array('text' =>  "No Search Results!");
-	// 			$parent = array();
-	// 			array_push($parent,$msg);
-	// 			$obj  = new stdClass();
-	// 			$obj->messages = $parent;
-	// 			print_r(json_encode($obj));
-	// 		}
+						// configure chart
+						$attachment = new stdClass();
+						$attachment->type = "template";
+						$attachment->payload = $payload;
+						$list_view  = new stdClass();
+						$list_view->messages[] = ['attachment' => $attachment];
+						print_r(json_encode($list_view));
+					}
+				}
+			} else {
+				$msg = array('text' =>  "No Search Results!");
+				$parent = array();
+				array_push($parent,$msg);
+				$obj  = new stdClass();
+				$obj->messages = $parent;
+				print_r(json_encode($obj));
+			}
 			
-	// 	}
-	// } else {
-	// 	$msg = array('text' =>  "No Search Results!");
-	// 	$parent = array();
-	// 	array_push($parent,$msg);
-	// 	$obj  = new stdClass();
-	// 	$obj->messages = $parent;
-	// 	print_r(json_encode($obj));
-	// }
+		}
+	} else {
+		$msg = array('text' =>  "No Search Results!");
+		$parent = array();
+		array_push($parent,$msg);
+		$obj  = new stdClass();
+		$obj->messages = $parent;
+		print_r(json_encode($obj));
+	}
 }
 
