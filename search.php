@@ -82,25 +82,19 @@ function processURL() {
  */
 function doRequest($my_url = null) {
 	if (isset($my_url) && strlen($my_url)) {
-		if (!file_exists('log/info.log')) {
-			throw new Exception("create a log file log/info.log", 1);
-		} else {
-			// get the requested url inside log
-			file_put_contents('log/info.log', "Requested url :: ".BASE_API_URL.$my_url);
-			$curl = curl_init();
-			// Set some options - we are passing in a useragent too here
-			curl_setopt_array($curl, array(
-			    CURLOPT_RETURNTRANSFER => 1,
-			    CURLOPT_URL => BASE_API_URL.$my_url,
-			    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
-			));
-			// Send the request & save response to $resp
-			$resp = curl_exec($curl);
+		$curl = curl_init();
+		// Set some options - we are passing in a useragent too here
+		curl_setopt_array($curl, array(
+		    CURLOPT_RETURNTRANSFER => 1,
+		    CURLOPT_URL => BASE_API_URL.$my_url,
+		    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+		));
+		// Send the request & save response to $resp
+		$resp = curl_exec($curl);
 
-			processOutput($resp);
-			// Close request to clear up some resources
+		processOutput($resp);
+		// Close request to clear up some resources
 			curl_close($curl);
-		}
 	} else {
 		throw new Exception("No URL has been passed to make a request", 1);
 		
