@@ -42,9 +42,27 @@ switch ($action) {
  		
     $array1 = json_decode(json_encode($user_detail), True);
     $arrsize=sizeof($array1);
-	 		echo $arrsize;
+	 		
+      if($arrsize<=1)
+      {
+      	$user1["messages"][]["text"]="There is  = ".$arrsize." result of yours search.";
+
+
+	 		echo json_encode($user1);
+
 	 		exit();
-    
+
+      }
+      else{
+	 		$user1["messages"][]["text"]="There are  = ".$arrsize." results of yours search.";
+
+
+	 		echo json_encode($user1);
+
+	 		exit();
+    	}
+
+    	
       foreach ($array1 as $key => $value) {
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
 		   }
