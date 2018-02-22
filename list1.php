@@ -44,20 +44,34 @@ switch ($action) {
     $arrsize=sizeof($array1);
 		$counter=0;    	
       foreach ($array1 as $key => $value) {
-      	if($counter<=9)
+      	if($counter<=9 && $counter!=9)
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     		echo json_encode($user1);
-     		$counter++;
-     		continue ;
+     		$counter++;	
+     		continue;
+
 		   }
-		   elseif($counter==9 && $counter <=18)
-		   {
-		   	$user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     		echo json_encode($user1);
-     		$counter++;
-		   }
-      
-		//	echo json_encode($user1);
+				echo json_encode($user1);
+				if($counter==9 && $counter<=18)
+				{
+					echo json_encode($user1);
+					$counter++;
+				}
+
+
+
+				/*if($counter==11){
+			foreach ($array1 as $key => $value) {
+      	if($counter==11 && $counter<=18)
+       $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+     		$counter++;	
+     	}
+		   }*/
+		   //print_r($counter);
+
+		   //echo json_encode($user1);
+
+
+			//print_r($counter);
 			
 		  exit();
 		
