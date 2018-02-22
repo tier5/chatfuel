@@ -53,9 +53,6 @@ switch ($action) {
 			
 		  exit();
 		
-			
-    
-		
 		break;
 	
 	default:
