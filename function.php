@@ -35,8 +35,8 @@ switch ($action) {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 		$result = curl_exec($curl);
 		curl_close($curl);
-	  // print_r($result);
-		//exit();
+	  
+		
 		$user_detail=json_decode($result);
 		/*print_r($user_detail);*/
  		
