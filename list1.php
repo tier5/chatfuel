@@ -46,10 +46,18 @@ switch ($action) {
       foreach ($array1 as $key => $value) {
       	if($counter<=9)
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     $counter++;
+     		echo json_encode($user1);
+     		$counter++;
+     		continue ;
+		   }
+		   elseif($counter==9 && $counter <=18)
+		   {
+		   	$user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+     		echo json_encode($user1);
+     		$counter++;
 		   }
       
-			echo json_encode($user1);
+		//	echo json_encode($user1);
 			
 		  exit();
 		
