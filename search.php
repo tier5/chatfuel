@@ -110,9 +110,6 @@ function processOutput($resp = null) {
 		$attachment_arr = array();
 		$resp_arr = json_decode($resp);
 		$counter  = 0;
-		// echo "<pre>";
-		// print_r($resp_arr);
-		// exit();
 		if (gettype($resp_arr) === 'object') {
 			$msg = array('text' =>  "No Search Results!");
 			$parent = array();
@@ -131,7 +128,8 @@ function processOutput($resp = null) {
 						$btn_obj->type ="phone_number";
 						$btn_obj->url = $each_resp->office_phone_number;
 						$btn_obj->title = "Call";
-						array_push($elements_btn_array, $btn_obj);
+						$elements_btn_array[0] = $btn_obj;
+						//array_push($elements_btn_array[0], $btn_obj);
 
 						// creating element object
 						$elem_objects = new stdClass();
@@ -153,9 +151,9 @@ function processOutput($resp = null) {
 						$attachment->payload = $payload;
 						$list_view  = new stdClass();
 						$list_view->messages[] = ['attachment' => $attachment];
-						print_r(json_encode($list_view));
 					}
 				}
+				print_r(json_encode($list_view));
 			} else {
 				$msg = array('text' =>  "No Search Results!");
 				$parent = array();
