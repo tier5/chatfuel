@@ -1,12 +1,10 @@
 <?php
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 /**
  * @const BASE_API_URL is the api url which will get hit when we gonna call the function
  */
 const BASE_API_URL = "http://members.lasvegasrealtor.com/search/v1/realtors?";
-
 try {
 	// calling the realtor search api function
 	processURL();
@@ -91,7 +89,6 @@ function doRequest($my_url = null) {
 		));
 		// Send the request & save response to $resp
 		$resp = curl_exec($curl);
-
 		processOutput($resp);
 		// Close request to clear up some resources
 			curl_close($curl);
@@ -100,7 +97,6 @@ function doRequest($my_url = null) {
 		
 	}
 }
-
 function processOutput($resp = null) {
 	
 	if (count($resp)) {
@@ -130,7 +126,6 @@ function processOutput($resp = null) {
 						$btn_obj->title = "Call";
 						$elements_btn_array[0] = $btn_obj;
 						//array_push($elements_btn_array[0], $btn_obj);
-
 						// creating element object
 						$elem_objects = new stdClass();
 						$elem_objects->title = $each_resp->full_name;
@@ -138,13 +133,11 @@ function processOutput($resp = null) {
 						$elem_objects->subtitle = $each_resp->office_name;
 						$elem_objects->buttons = $elements_btn_array;
 						array_push($elements, $elem_objects);
-
 						// payload
 						$payload = new stdClass();
 						$payload->template_type = "list";
 						$payload->top_element_style = "large";
 						$payload->elements = $elements;
-
 						// configure chart
 						$attachment = new stdClass();
 						$attachment->type = "template";
@@ -173,4 +166,3 @@ function processOutput($resp = null) {
 		print_r(json_encode($obj));
 	}
 }
-

@@ -42,32 +42,36 @@ switch ($action) {
  		
     $array1 = json_decode(json_encode($user_detail), True);
     $arrsize=sizeof($array1);
-	 		
-      if($arrsize<=1)
-      {
-      	$user1["messages"][]["text"]="There is  = ".$arrsize." result of yours search.";
-
-
-	 		echo json_encode($user1);
-
-	 		exit();
-
-      }
-      else{
-	 		$user1["messages"][]["text"]="There are  = ".$arrsize." results of yours search.";
-
-
-	 		echo json_encode($user1);
-
-	 		exit();
-    	}
-
-    	
+		$counter=0;    	
       foreach ($array1 as $key => $value) {
+      	if($counter<=9 && $counter!=9)
        $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+     		$counter++;	
+     		continue;
+
 		   }
-      
-			echo json_encode($user1);
+				echo json_encode($user1);
+				if($counter==9 && $counter<=18)
+				{
+					echo json_encode($user1);
+					$counter++;
+				}
+
+
+
+				/*if($counter==11){
+			foreach ($array1 as $key => $value) {
+      	if($counter==11 && $counter<=18)
+       $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+     		$counter++;	
+     	}
+		   }*/
+		   //print_r($counter);
+
+		   //echo json_encode($user1);
+
+
+			//print_r($counter);
 			
 		  exit();
 		
