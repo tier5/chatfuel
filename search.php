@@ -164,6 +164,10 @@ function processOutput($resp = null) {
 					$variables_obj = new stdClass();
 					$variables_obj->demo  =200;
 					$list_view->set_attributes = $variables_obj;
+					$variables_obj1 = new stdClass();
+					$variables_obj1->page_strt = $paginate_start+2;
+					$variables_obj1->page_end = $paginate_end+2;
+					$list_view->set_attributes = $variables_obj1;
 				} else {
 					$variables_obj = new stdClass();
 					$variables_obj->demo  =404;
