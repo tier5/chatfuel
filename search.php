@@ -160,9 +160,7 @@ function processOutput($resp = null) {
 					// set user attribute here
 					$variables_obj = new stdClass();
 					$variables_obj->demo = 200;
-					$attribute_obj = new stdClass();
-					$attribute_obj->set_attributes = $variables_obj;
-					print_r(json_encode($attribute_obj));
+					$list_view->set_attributes = $variables_obj;
 				}
 				print_r(json_encode($list_view));
 			} else {
