@@ -156,13 +156,13 @@ function processOutput($resp = null) {
 					$list_view  = new stdClass();
 					$list_view->messages[] = ['attachment' => $attachment];
 				}
+				// print_r($counter);
 				// if counter is more than 2 need to have a pagination
 				if ($counter > 2) {
 					// set user attribute here
 					$variables_obj = new stdClass();
-					$variables_obj->demo  =200;
-					$list_view->set_attributes = $variables_obj;
 					$variables_obj1 = new stdClass();
+					$variables_obj1->demo  =200;
 					$variables_obj1->page_strt = $paginate_start+2;
 					$variables_obj1->page_end = $paginate_end+2;
 					$list_view->set_attributes = $variables_obj1;
