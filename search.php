@@ -161,6 +161,10 @@ function processOutput($resp = null) {
 					$variables_obj = new stdClass();
 					$variables_obj->demo  =200;
 					$list_view->set_attributes = $variables_obj;
+				} else {
+					$variables_obj = new stdClass();
+					$variables_obj->demo  =404;
+					$list_view->set_attributes = $variables_obj;
 				}
 				print_r(json_encode($list_view));
 			} else {
