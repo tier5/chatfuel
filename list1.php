@@ -46,7 +46,9 @@ switch ($action) {
 		print_r($array1); 
 		 exit; */
 		$resArr = [];
-		$elements_array=array();	
+		$elements_array=array();
+		$attachment_array=array();
+
 		if(isset($array1['status'])){
 
 				$resArr["messages"][]["text"]="No data found";
@@ -68,18 +70,17 @@ switch ($action) {
 				}
 			}
 
-			$resArr['messages'][0]['attachment']['type'] =  'template';
-			$resArr['messages'][0]['attachment']['payload']['template_type'] =  'list';
-			$resArr['messages'][0]['attachment']['payload']["top_element_style"] = "large";
-			$resArr['messages'][0]['attachment']['payload']['elements']  = $elements_array;
+			$attachment_array['type'] =  'template';
+			$attachment_array['payload']['template_type'] =  'list';
+			$attachment_array['payload']["top_element_style"] = "large";
+			$attachment_array['payload']['elements']  = $elements_array;
+
+
+			$resArr['messages'][]['attachment']= $attachment_array;
+			
 		}
 
-		/*echo "<pre>";
-		print_r($resArr);*/
-		$resArr=json_encode($resArr);
-		echo $resArr;
-		/*
-		print_r($elements_array);*/
+		echo json_encode($resArr);	
 
 	break;
 	
