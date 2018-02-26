@@ -44,36 +44,35 @@ switch ($action) {
     $array1 = json_decode(json_encode($user_detail), True);
     $arrsize=sizeof($array1);
 		$counter=0; 
-		//echo "<pre>";
-		// print_r($array1); 
-		// exit; 
+		/*echo "<pre>";
+		print_r($array1); 
+		 exit; */
 		$resArr = [];	
-		foreach ($array1 as $rkey => $rvalue) {
-		//	if ($rkey >= $offset && $counter <= 9) 
-			if(isset($rvalue['status'])){
+		if(isset($array1['status'])){
 
 				$resArr["messages"][]["text"]="No data found";
 
-			}else{
+		}else{
 
+			foreach ($array1 as $rkey => $rvalue) {
 				if($counter==0){
 
-						/*$resArr['messages'][$counter]['attachment']['type'] =  'template';
-						$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
-						$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
-						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
-						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
-						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];*/
-						$resArr["messages"][]["text"]="data found";
-						$counter++;
+					$resArr['messages'][$counter]['attachment']['type'] =  'template';
+					$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
+					$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
+					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
+					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
+					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
+
+					$counter++;
 
 				}
 			}
 			// $resArr['messages'][$rkey] = 
 		}
 
-		/*echo "<pre>";
-		print_r($resArr);*/
+		echo "<pre>";
+		print_r($resArr);
 		print_r(json_encode($resArr));
 
 	break;
