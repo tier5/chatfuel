@@ -30,6 +30,7 @@ switch ($action) {
 		$last_name=$_GET["last_name"];
 		$office_name = $_GET["office_name"];
 	 	$service_url = "http://members.lasvegasrealtor.com/search/v1/realtors?first_name=".$first_name."&last_name=".$last_name."&office_name=".$office_name;
+	 	$offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
    	$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $service_url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -42,20 +43,38 @@ switch ($action) {
  		
     $array1 = json_decode(json_encode($user_detail), True);
     $arrsize=sizeof($array1);
-		$counter=0;    	
-      foreach ($array1 as $key => $value) {
-      	if($counter<=9 && $counter!=9)
-       $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     		$counter++;	
-     		continue;
+		$counter=0; 
+		echo "<pre>";
+		// print_r($array1); 
+		// exit; 
+		$resArr = [];	
+		foreach ($array1 as $rkey => $rvalue) {
+			if ($rkey >= $offset && $counter <= 9) {
+				$resArr['messages'][$rkey]['attachment']['type'] =  'template';
+				$resArr['messages'][$rkey]['attachment']['payload']['text'] =  'Text';
+				$resArr['messages'][$rkey]['attachment']['payload']['template_type'] =  'button';
+				$resArr['messages'][$rkey]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
+				$resArr['messages'][$rkey]['attachment']['payload']['buttons'][0]['phone_number'] =  $rvalue['office_phone_number'];
+				$resArr['messages'][$rkey]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
+				$counter++;
+			}
+			
+			// $resArr['messages'][$rkey] = 
+		}
+		print_r(json_encode($resArr));
+     //  foreach ($array1 as $key => $value) {
+     //  	if($counter<=9)
+     //   $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
+     // 		$counter++;	
+     // 		//continue;
 
-		   }
-				echo json_encode($user1);
-				if($counter==9 && $counter<=18)
+		   // }
+				// echo json_encode($user1);
+				/*if($counter==9 && $counter<=18)
 				{
 					echo json_encode($user1);
 					$counter++;
-				}
+				}*/
 
 
 
