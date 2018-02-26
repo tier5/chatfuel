@@ -50,7 +50,13 @@ switch ($action) {
 		$resArr = [];	
 		foreach ($array1 as $rkey => $rvalue) {
 		//	if ($rkey >= $offset && $counter <= 9) 
-				if($counter==0){
+		if(isset($rvalue['status']){
+
+			$resArr["messages"][]["text"]="No data found";
+
+		}else{
+
+			if($counter==0){
 				$resArr['messages'][$counter]['attachment']['type'] =  'template';
 				$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
 				$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
@@ -58,6 +64,7 @@ switch ($action) {
 				$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
 				$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
 				$counter++;
+
 			}
 			
 			// $resArr['messages'][$rkey] = 
