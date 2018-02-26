@@ -38,16 +38,17 @@ switch ($action) {
 		curl_close($curl);
 	  
 		
-		$user_detail=json_decode($result);
+		$array1=json_decode($result, True);
 		/*print_r($user_detail);*/
- 		
-    $array1 = json_decode(json_encode($user_detail), True);
-    $arrsize=sizeof($array1);
-		$counter=0; 
+ 		$arrsize= sizeof($array1);
+		$counter= 0; 
 		/*echo "<pre>";
 		print_r($array1); 
 		 exit; */
-		$resArr = [];	
+		$resArr = [];
+		$elements_array=array();
+		$attachment_array=array();
+
 		if(isset($array1['status'])){
 
 				$resArr["messages"][]["text"]="No data found";
@@ -55,26 +56,31 @@ switch ($action) {
 		}else{
 
 			foreach ($array1 as $rkey => $rvalue) {
-				if($counter==0){
-
-					$resArr['messages'][$counter]['attachment']['type'] =  'template';
-					$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
-					$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
-
+				if($counter < 2){
+					
+					$elements_array[$counter]['title'] =  $rvalue['full_name'];
+					$elements_array[$counter]['image_url'] =  "http://www.lasvegasrealtor.com//wp-content//themes//lasvegas//images//logo.jpg";
+					$elements_array[$counter]['subtitle'] =  $rvalue['office_name'];
+					$elements_array[$counter]['buttons'][0]['type'] =  "URL";
+					$elements_array[$counter]['buttons'][0]['url']  =  "http://portal.tier5.in/employee_control/Employee";
+					$elements_array[$counter]['buttons'][0]['title']=  "View Website";
+					
 					$counter++;
 
 				}
 			}
-			// $resArr['messages'][$rkey] = 
+
+			$attachment_array['type'] =  'template';
+			$attachment_array['payload']['template_type'] =  'list';
+			$attachment_array['payload']["top_element_style"] = "large";
+			$attachment_array['payload']['elements']  = $elements_array;
+
+
+			$resArr['messages'][]['attachment']= $attachment_array;
+			
 		}
 
-		/*echo "<pre>";
-		print_r($resArr);*/
-		print_r(json_encode($resArr));
-		//print_r(json_decode($resArr));
+		echo json_encode($resArr);	
 
 	break;
 	
