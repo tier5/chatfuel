@@ -50,62 +50,32 @@ switch ($action) {
 		$resArr = [];	
 		foreach ($array1 as $rkey => $rvalue) {
 		//	if ($rkey >= $offset && $counter <= 9) 
-		if(isset($rvalue['status']){
+			if(isset($rvalue['status'])){
 
-			$resArr["messages"][]["text"]="No data found";
+				$resArr["messages"][]["text"]="No data found";
 
-		}else{
+			}else{
 
-			if($counter==0){
-				$resArr['messages'][$counter]['attachment']['type'] =  'template';
-				$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
-				$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
-				$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
-				$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
-				$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
-				$counter++;
+				if($counter==0){
 
+						$resArr['messages'][$counter]['attachment']['type'] =  'template';
+						$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
+						$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
+						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
+						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
+						$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
+						$counter++;
+
+				}
 			}
-			
 			// $resArr['messages'][$rkey] = 
 		}
 
 		/*echo "<pre>";
 		print_r($resArr);*/
 		print_r(json_encode($resArr));
-     //  foreach ($array1 as $key => $value) {
-     //  	if($counter<=9)
-     //   $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     // 		$counter++;	
-     // 		//continue;
 
-		   // }
-				// echo json_encode($user1);
-				/*if($counter==9 && $counter<=18)
-				{
-					echo json_encode($user1);
-					$counter++;
-				}*/
-
-
-
-				/*if($counter==11){
-			foreach ($array1 as $key => $value) {
-      	if($counter==11 && $counter<=18)
-       $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
-     		$counter++;	
-     	}
-		   }*/
-		   //print_r($counter);
-
-		   //echo json_encode($user1);
-
-
-			//print_r($counter);
-			
-		  exit();
-		
-		break;
+	break;
 	
 	default:
 		echo "no";
