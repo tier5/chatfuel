@@ -30,7 +30,7 @@ switch ($action) {
 		$last_name=$_GET["last_name"];
 		$office_name = $_GET["office_name"];
 	 	$service_url = "http://members.lasvegasrealtor.com/search/v1/realtors?first_name=".$first_name."&last_name=".$last_name."&office_name=".$office_name;
-	 	$offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
+	 //	$offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
    	$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, $service_url);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -49,7 +49,8 @@ switch ($action) {
 		// exit; 
 		$resArr = [];	
 		foreach ($array1 as $rkey => $rvalue) {
-			if ($rkey >= $offset && $counter <= 9) {
+		//	if ($rkey >= $offset && $counter <= 9) 
+				if($counter<=1){
 				$resArr['messages'][$rkey]['attachment']['type'] =  'template';
 				$resArr['messages'][$rkey]['attachment']['payload']['template_type'] =  'button';
 				$resArr['messages'][$rkey]['attachment']['payload']['text'] =  'Text';
