@@ -56,12 +56,12 @@ switch ($action) {
 		}else{
 
 			foreach ($array1 as $rkey => $rvalue) {
-				if($counter < 1){
+				if($counter < 2){
 					
-					$elements_array[$counter]['title'] =  $rvalue['office_phone_number'];
-					$elements_array[$counter]['image_url'] =  "http://portal.tier5.in";
-					$elements_array[$counter]['subtitle'] =  $rvalue['office_phone_number'];
-					$elements_array[$counter]['buttons'][0]['type'] =  $rvalue['office_phone_number'];
+					$elements_array[$counter]['title'] =  $rvalue['full_name'];
+					$elements_array[$counter]['image_url'] =  "http://www.lasvegasrealtor.com//wp-content//themes//lasvegas//images//logo.jpg";
+					$elements_array[$counter]['subtitle'] =  $rvalue['office_name'];
+					$elements_array[$counter]['buttons'][0]['type'] =  "URL";
 					$elements_array[$counter]['buttons'][0]['url']  =  "http://portal.tier5.in/employee_control/Employee";
 					$elements_array[$counter]['buttons'][0]['title']=  "View Website";
 					
