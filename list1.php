@@ -38,16 +38,15 @@ switch ($action) {
 		curl_close($curl);
 	  
 		
-		$user_detail=json_decode($result);
+		$array1=json_decode($result, True);
 		/*print_r($user_detail);*/
- 		
-    $array1 = json_decode(json_encode($user_detail), True);
-    $arrsize=sizeof($array1);
-		$counter=0; 
+ 		$arrsize= sizeof($array1);
+		$counter= 0; 
 		/*echo "<pre>";
 		print_r($array1); 
 		 exit; */
-		$resArr = [];	
+		$resArr = [];
+		$button_array=array();	
 		if(isset($array1['status'])){
 
 				$resArr["messages"][]["text"]="No data found";
@@ -55,26 +54,28 @@ switch ($action) {
 		}else{
 
 			foreach ($array1 as $rkey => $rvalue) {
-				if($counter==0){
-
-					$resArr['messages'][$counter]['attachment']['type'] =  'template';
-					$resArr['messages'][$counter]['attachment']['payload']['template_type'] =  'button';
-					$resArr['messages'][$counter]['attachment']['payload']['text'] =  'Text';
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['url'] =  "http://portal.tier5.in";
-					$resArr['messages'][$counter]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
-
+				if($counter < 9){
+					
+					$button_array[$counter]['type'] =  $rvalue['office_phone_number'];
+					$button_array[$counter]['url'] =  "http://portal.tier5.in";
+					$button_array[$counter]['title'] =  $rvalue['office_phone_number'];
 					$counter++;
 
 				}
 			}
-			// $resArr['messages'][$rkey] = 
+
+			$resArr['messages'][0]['attachment']['type'] =  'template';
+			$resArr['messages'][0]['attachment']['payload']['template_type'] =  'button';
+			$resArr['messages'][0]['attachment']['payload']['text'] =  'Text';
+			$resArr['messages'][0]['attachment']['payload']['buttons']  = $button_array;
 		}
 
 		/*echo "<pre>";
 		print_r($resArr);*/
-		print_r(json_encode($resArr));
-		//print_r(json_decode($resArr));
+		$resArr=json_encode($resArr);
+		echo $resArr;
+		/*
+		print_r($button_array);*/
 
 	break;
 	
