@@ -71,8 +71,8 @@ switch ($action) {
 			// $resArr['messages'][$rkey] = 
 		}
 
-		echo "<pre>";
-		print_r($resArr);
+		/*echo "<pre>";
+		print_r($resArr);*/
 		print_r(json_encode($resArr));
 
 	break;
