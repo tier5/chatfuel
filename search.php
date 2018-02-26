@@ -129,9 +129,7 @@ function processOutput($resp = null) {
 		} else { 
 			if (count($resp_arr)) {
 				//count total number of objects
-				foreach ($resp_arr as $key => $value) {
-					$counter++;
-				}
+				$counter = count($resp_arr);
 				for ($i=$paginate_start; $i < $paginate_end ; $i++) { 
 					$btn_obj	= new stdClass();
 					$btn_obj->type ="phone_number";
