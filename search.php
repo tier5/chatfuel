@@ -122,6 +122,9 @@ function processOutput($resp = null) {
 			array_push($parent,$msg);
 			$obj  = new stdClass();
 			$obj->messages = $parent;
+			$variables_obj = new stdClass();
+			$variables_obj->demo  =404;
+			$obj->set_attributes = $variables_obj;
 			print_r(json_encode($obj));
 		} else { 
 			if (count($resp_arr)) {
@@ -173,6 +176,9 @@ function processOutput($resp = null) {
 				array_push($parent,$msg);
 				$obj  = new stdClass();
 				$obj->messages = $parent;
+				$variables_obj = new stdClass();
+				$variables_obj->demo  =404;
+				$obj->set_attributes = $variables_obj;
 				print_r(json_encode($obj));
 			}
 			
