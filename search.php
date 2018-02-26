@@ -130,7 +130,7 @@ function processOutput($resp = null) {
 			if (count($resp_arr)) {
 				//count total number of objects
 				$counter = count($resp_arr);
-				if (array_key_exists($paginate_start, $resp_arr) || array_key_exists($paginate_end, $resp_arr)) {
+				if (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
 					for ($i=$paginate_start; $i < $paginate_end ; $i++) { 
 						$btn_obj	= new stdClass();
 						$btn_obj->type ="phone_number";
@@ -175,11 +175,14 @@ function processOutput($resp = null) {
 					print_r(json_encode($list_view));
 				} else {
 					$msg = array('text' =>  "No More Results!");
-		$parent = array();
-		array_push($parent,$msg);
-		$obj  = new stdClass();
-		$obj->messages = $parent;
-		print_r(json_encode($obj));
+					$parent = array();
+					array_push($parent,$msg);
+					$obj  = new stdClass();
+					$obj->messages = $parent;
+					$variables_obj = new stdClass();
+					$variables_obj->demo  =404;
+					$obj->set_attributes = $variables_obj;
+					print_r(json_encode($obj));
 				}
 				
 			} else {
