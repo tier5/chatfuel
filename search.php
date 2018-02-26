@@ -159,7 +159,9 @@ function processOutput($resp = null) {
 				if ($counter > 2) {
 					// set user attribute here
 					$variables_obj = new stdClass();
-					$variables_obj->demo = 200;
+					$variables_obj->start += 2;
+					$variables_obj->end   += 2;
+					$variables_obj->demo  =200;
 					$list_view->set_attributes = $variables_obj;
 				}
 				print_r(json_encode($list_view));
