@@ -59,7 +59,7 @@ switch ($action) {
 				$counter++;
 			}
 			
-			
+			// $resArr['messages'][$rkey] = 
 		}
 		print_r(json_encode($resArr));
      //  foreach ($array1 as $key => $value) {
