@@ -48,20 +48,15 @@ switch ($action) {
 		// print_r($array1); 
 		// exit; 
 		$resArr = [];	
-		foreach ($array1 as $rkey => $rvalue) {
-		//	if ($rkey >= $offset && $counter <= 9) 
-				if($counter==0){
-				$resArr['messages'][0]['attachment']['type'] =  'template';
-				$resArr['messages'][0]['attachment']['payload']['template_type'] =  'button';
-				$resArr['messages'][0]['attachment']['payload']['text'] =  'Text';
-				$resArr['messages'][0]['attachment']['payload']['buttons'][0]['type'] =  $rvalue['office_phone_number'];
-				$resArr['messages'][0]['attachment']['payload']['buttons'][0]['phone_number'] =  $rvalue['office_phone_number'];
-				$resArr['messages'][0]['attachment']['payload']['buttons'][0]['title'] =  $rvalue['office_phone_number'];
-				$counter++;
-			}
+		
+		$resArr['messages'][0]['attachment']['type'] =  'template';
+		$resArr['messages'][0]['attachment']['payload']['template_type'] =  'button';
+		$resArr['messages'][0]['attachment']['payload']['text'] =  'Text';
+		$resArr['messages'][0]['attachment']['payload']['buttons'][0]['type'] =  "987456321";
+		$resArr['messages'][0]['attachment']['payload']['buttons'][0]['phone_number'] = "9784646546465";
+		$resArr['messages'][0]['attachment']['payload']['buttons'][0]['title'] =  "54654654654";
+		$counter++;
 			
-			// $resArr['messages'][$rkey] = 
-		}
 		print_r(json_encode($resArr));
      //  foreach ($array1 as $key => $value) {
      //  	if($counter<=9)
