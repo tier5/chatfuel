@@ -62,7 +62,8 @@ switch ($action) {
 			
 			// $resArr['messages'][$rkey] = 
 		}
-		print_r(json_encode($resArr));
+
+		print_r(json_encode($resArr,true));
      //  foreach ($array1 as $key => $value) {
      //  	if($counter<=9)
      //   $user1["messages"][]["text"]="Full Name = ".$value["full_name"].", Company Name = ".$value["office_name"].", Office Phone Number = ".$value["office_phone_number"];
