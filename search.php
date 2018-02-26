@@ -175,14 +175,11 @@ function processOutput($resp = null) {
 					print_r(json_encode($list_view));
 				} else {
 					$msg = array('text' =>  "No More Results!");
-					$parent = array();
-					array_push($parent,$msg);
-					$obj  = new stdClass();
-					$obj->messages = $parent;
-					$variables_obj = new stdClass();
-					$variables_obj->demo  =404;
-					$obj->set_attributes = $variables_obj;
-					print_r(json_encode($obj));
+		$parent = array();
+		array_push($parent,$msg);
+		$obj  = new stdClass();
+		$obj->messages = $parent;
+		print_r(json_encode($obj));
 				}
 				
 			} else {
