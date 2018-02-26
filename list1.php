@@ -44,13 +44,13 @@ switch ($action) {
     $array1 = json_decode(json_encode($user_detail), True);
     $arrsize=sizeof($array1);
 		$counter=0; 
-		echo "<pre>";
+		//echo "<pre>";
 		// print_r($array1); 
 		// exit; 
 		$resArr = [];	
 		foreach ($array1 as $rkey => $rvalue) {
 		//	if ($rkey >= $offset && $counter <= 9) 
-				if($counter<=1){
+				if($counter==0){
 				$resArr['messages'][$rkey]['attachment']['type'] =  'template';
 				$resArr['messages'][$rkey]['attachment']['payload']['template_type'] =  'button';
 				$resArr['messages'][$rkey]['attachment']['payload']['text'] =  'Text';
