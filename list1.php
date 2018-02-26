@@ -74,6 +74,7 @@ switch ($action) {
 		/*echo "<pre>";
 		print_r($resArr);*/
 		print_r(json_encode($resArr));
+		//print_r(json_decode($resArr));
 
 	break;
 	
