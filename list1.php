@@ -56,7 +56,7 @@ switch ($action) {
 		}else{
 
 			foreach ($array1 as $rkey => $rvalue) {
-				if($counter < 9){
+				if($counter < 1){
 					
 					$elements_array[$counter]['title'] =  $rvalue['office_phone_number'];
 					$elements_array[$counter]['image_url'] =  "http://portal.tier5.in";
