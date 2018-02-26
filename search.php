@@ -85,7 +85,7 @@ function doRequest($my_url = null) {
 		curl_setopt_array($curl, array(
 		    CURLOPT_RETURNTRANSFER => 1,
 		    CURLOPT_URL => BASE_API_URL.$my_url,
-		    CURLOPT_USERAGENT => 'Codular Sample cURL Request'
+		    CURLOPT_USERAGENT => 'Requesting to las vegas relator search....'
 		));
 		// Send the request & save response to $resp
 		$resp = curl_exec($curl);
@@ -113,39 +113,65 @@ function processOutput($resp = null) {
 			$obj  = new stdClass();
 			$obj->messages = $parent;
 			print_r(json_encode($obj));
-		} else {
+		} else { 
 			if (count($resp_arr)) {
-				foreach ($resp_arr as $x => $each_resp) {
-					// count iterations
-					$counter++;
-					if ($counter <= 2) {
-					 	// creating buttons for list
-						$btn_obj	= new stdClass();
-						$btn_obj->type ="phone_number";
-						$btn_obj->url = $each_resp->office_phone_number;
-						$btn_obj->title = "Call";
-						$elements_btn_array[0] = $btn_obj;
-						//array_push($elements_btn_array[0], $btn_obj);
-						// creating element object
-						$elem_objects = new stdClass();
-						$elem_objects->title = $each_resp->full_name;
-						$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-						$elem_objects->subtitle = $each_resp->office_name;
-						$elem_objects->buttons = $elements_btn_array;
-						array_push($elements, $elem_objects);
-						// payload
-						$payload = new stdClass();
-						$payload->template_type = "list";
-						$payload->top_element_style = "large";
-						$payload->elements = $elements;
-						// configure chart
-						$attachment = new stdClass();
-						$attachment->type = "template";
-						$attachment->payload = $payload;
-						$list_view  = new stdClass();
-						$list_view->messages[] = ['attachment' => $attachment];
-					}
+				for ($i=0; $i < 2 ; $i++) { 
+					$btn_obj	= new stdClass();
+					$btn_obj->type ="phone_number";
+					$btn_obj->url = $resp_arr[$i]->office_phone_number;
+					$btn_obj->title = "Call";
+					$elements_btn_array[0] = $btn_obj;
+					//array_push($elements_btn_array[0], $btn_obj);
+					// creating element object
+					$elem_objects = new stdClass();
+					$elem_objects->title = $resp_arr[$i]->full_name;
+					$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+					$elem_objects->subtitle = $resp_arr[$i]->office_name;
+					$elem_objects->buttons = $elements_btn_array;
+					array_push($elements, $elem_objects);
+					// payload
+					$payload = new stdClass();
+					$payload->template_type = "list";
+					$payload->top_element_style = "large";
+					$payload->elements = $elements;
+					// configure chart
+					$attachment = new stdClass();
+					$attachment->type = "template";
+					$attachment->payload = $payload;
+					$list_view  = new stdClass();
+					$list_view->messages[] = ['attachment' => $attachment];
 				}
+				// foreach ($resp_arr as $x => $each_resp) {
+				// 	// count iterations
+				// 	$counter++;
+				// 	if ($counter <= 2) {
+				// 	 	// creating buttons for list
+				// 		$btn_obj	= new stdClass();
+				// 		$btn_obj->type ="phone_number";
+				// 		$btn_obj->url = $each_resp->office_phone_number;
+				// 		$btn_obj->title = "Call";
+				// 		$elements_btn_array[0] = $btn_obj;
+				// 		//array_push($elements_btn_array[0], $btn_obj);
+				// 		// creating element object
+				// 		$elem_objects = new stdClass();
+				// 		$elem_objects->title = $each_resp->full_name;
+				// 		$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
+				// 		$elem_objects->subtitle = $each_resp->office_name;
+				// 		$elem_objects->buttons = $elements_btn_array;
+				// 		array_push($elements, $elem_objects);
+				// 		// payload
+				// 		$payload = new stdClass();
+				// 		$payload->template_type = "list";
+				// 		$payload->top_element_style = "large";
+				// 		$payload->elements = $elements;
+				// 		// configure chart
+				// 		$attachment = new stdClass();
+				// 		$attachment->type = "template";
+				// 		$attachment->payload = $payload;
+				// 		$list_view  = new stdClass();
+				// 		$list_view->messages[] = ['attachment' => $attachment];
+				// 	}
+				// }
 				print_r(json_encode($list_view));
 			} else {
 				$msg = array('text' =>  "No Search Results!");
