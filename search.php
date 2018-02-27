@@ -106,79 +106,94 @@ function processOutput($resp = null) {
 		$attachment_arr = array();
 		$resp_arr = json_decode($resp);
 		$counter  = 0;
+		if (isset($_GET['start'])) {
+			$paginate_start = $_GET['start'];
+		} else {
+			$paginate_start = 0;
+		} 
+		if (isset($_GET['end'])) {
+			$paginate_end  = $_GET['end'];
+		} else {
+			$paginate_end  = 2;
+		}
 		if (gettype($resp_arr) === 'object') {
 			$msg = array('text' =>  "No Search Results!");
 			$parent = array();
 			array_push($parent,$msg);
 			$obj  = new stdClass();
 			$obj->messages = $parent;
+			$variables_obj = new stdClass();
+			$variables_obj->demo  =404;
+			$obj->set_attributes = $variables_obj;
 			print_r(json_encode($obj));
 		} else { 
 			if (count($resp_arr)) {
-				for ($i=0; $i < 2 ; $i++) { 
-					$btn_obj	= new stdClass();
-					$btn_obj->type ="phone_number";
-					$btn_obj->url = $resp_arr[$i]->office_phone_number;
-					$btn_obj->title = "Call";
-					$elements_btn_array[0] = $btn_obj;
-					//array_push($elements_btn_array[0], $btn_obj);
-					// creating element object
-					$elem_objects = new stdClass();
-					$elem_objects->title = $resp_arr[$i]->full_name;
-					$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-					$elem_objects->subtitle = $resp_arr[$i]->office_name;
-					$elem_objects->buttons = $elements_btn_array;
-					array_push($elements, $elem_objects);
-					// payload
-					$payload = new stdClass();
-					$payload->template_type = "list";
-					$payload->top_element_style = "large";
-					$payload->elements = $elements;
-					// configure chart
-					$attachment = new stdClass();
-					$attachment->type = "template";
-					$attachment->payload = $payload;
-					$list_view  = new stdClass();
-					$list_view->messages[] = ['attachment' => $attachment];
+				//count total number of objects
+				$counter = count($resp_arr);
+				if (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
+					for ($i=$paginate_start; $i < $paginate_end ; $i++) { 
+						$btn_obj	= new stdClass();
+						$btn_obj->type ="phone_number";
+						$btn_obj->url = $resp_arr[$i]->office_phone_number;
+						$btn_obj->title = "Call";
+						$elements_btn_array[0] = $btn_obj;
+						//array_push($elements_btn_array[0], $btn_obj);
+						// creating element object
+						$elem_objects = new stdClass();
+						$elem_objects->title = $resp_arr[$i]->full_name;
+						$elem_objects->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
+						$elem_objects->subtitle = $resp_arr[$i]->office_name;
+						$elem_objects->buttons = $elements_btn_array;
+						array_push($elements, $elem_objects);
+						// payload
+						$payload = new stdClass();
+						$payload->template_type = "list";
+						$payload->top_element_style = "large";
+						$payload->elements = $elements;
+						// configure chart
+						$attachment = new stdClass();
+						$attachment->type = "template";
+						$attachment->payload = $payload;
+						$list_view  = new stdClass();
+						$list_view->messages[] = ['attachment' => $attachment];
+					}
+					// print_r($counter);
+					// if counter is more than 2 need to have a pagination
+					if ($counter > 2) {
+						// set user attribute here
+						$variables_obj = new stdClass();
+						$variables_obj1 = new stdClass();
+						$variables_obj1->demo  =200;
+						$variables_obj1->page_strt = $paginate_start+2;
+						$variables_obj1->page_end = $paginate_end+2;
+						$list_view->set_attributes = $variables_obj1;
+					} else {
+						$variables_obj = new stdClass();
+						$variables_obj->demo  =404;
+						$list_view->set_attributes = $variables_obj;
+					}
+					print_r(json_encode($list_view));
+				} else {
+					$msg = array('text' =>  "No More Results!");
+					$parent = array();
+					array_push($parent,$msg);
+					$obj  = new stdClass();
+					$obj->messages = $parent;
+					$variables_obj = new stdClass();
+					$variables_obj->demo  =404;
+					$obj->set_attributes = $variables_obj;
+					print_r(json_encode($obj));
 				}
-				// foreach ($resp_arr as $x => $each_resp) {
-				// 	// count iterations
-				// 	$counter++;
-				// 	if ($counter <= 2) {
-				// 	 	// creating buttons for list
-				// 		$btn_obj	= new stdClass();
-				// 		$btn_obj->type ="phone_number";
-				// 		$btn_obj->url = $each_resp->office_phone_number;
-				// 		$btn_obj->title = "Call";
-				// 		$elements_btn_array[0] = $btn_obj;
-				// 		//array_push($elements_btn_array[0], $btn_obj);
-				// 		// creating element object
-				// 		$elem_objects = new stdClass();
-				// 		$elem_objects->title = $each_resp->full_name;
-				// 		$elem_objects->image_url = "http://www.lasvegasrealtor.com/wp-content/themes/lasvegas/images/logo.jpg";
-				// 		$elem_objects->subtitle = $each_resp->office_name;
-				// 		$elem_objects->buttons = $elements_btn_array;
-				// 		array_push($elements, $elem_objects);
-				// 		// payload
-				// 		$payload = new stdClass();
-				// 		$payload->template_type = "list";
-				// 		$payload->top_element_style = "large";
-				// 		$payload->elements = $elements;
-				// 		// configure chart
-				// 		$attachment = new stdClass();
-				// 		$attachment->type = "template";
-				// 		$attachment->payload = $payload;
-				// 		$list_view  = new stdClass();
-				// 		$list_view->messages[] = ['attachment' => $attachment];
-				// 	}
-				// }
-				print_r(json_encode($list_view));
+				
 			} else {
 				$msg = array('text' =>  "No Search Results!");
 				$parent = array();
 				array_push($parent,$msg);
 				$obj  = new stdClass();
 				$obj->messages = $parent;
+				$variables_obj = new stdClass();
+				$variables_obj->demo  =404;
+				$obj->set_attributes = $variables_obj;
 				print_r(json_encode($obj));
 			}
 			
