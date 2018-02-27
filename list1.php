@@ -67,9 +67,6 @@ switch ($action) {
 
 			foreach ($array1 as $rkey => $rvalue) {
 				if($counter < 2){
-					// $data1 = new stdClass();
-					// $data2 = new stdClass();
-					 //$data3 = new stdClass();
 					
 			
 					
