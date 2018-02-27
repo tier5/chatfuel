@@ -45,10 +45,20 @@ switch ($action) {
 		/*echo "<pre>";
 		print_r($array1); 
 		 exit; */
-		$resArr = [];
-		$elements_array=array();
-		$attachment_array=array();
+		// $resArr = [];
+	//	$elements_array=array();
+		//$attachment_array=array();
 
+			$resArr =array();
+			$elements_array=array();
+			$attachment_array=array();
+		//$elements_array=new stdClass();
+		//$attachment_array=new stdClass();
+			/*$list1=array();
+			$list2=array();
+			$list3=array();
+*/
+			
 		if(isset($array1['status'])){
 
 				$resArr["messages"][]["text"]="No data found";
@@ -57,6 +67,11 @@ switch ($action) {
 
 			foreach ($array1 as $rkey => $rvalue) {
 				if($counter < 2){
+					// $data1 = new stdClass();
+					// $data2 = new stdClass();
+					 //$data3 = new stdClass();
+					
+			
 					
 					$elements_array[$counter]['title'] =  $rvalue['full_name'];
 					$elements_array[$counter]['image_url'] =  "http://www.lasvegasrealtor.com//wp-content//themes//lasvegas//images//logo.jpg";
@@ -64,7 +79,8 @@ switch ($action) {
 					$elements_array[$counter]['buttons'][0]['type'] =  "URL";
 					$elements_array[$counter]['buttons'][0]['url']  =  "http://portal.tier5.in/employee_control/Employee";
 					$elements_array[$counter]['buttons'][0]['title']=  "View Website";
-					
+					/*array_push($list1,$elements_array );
+					array_push($list3,$resArr );*/
 					$counter++;
 
 				}
@@ -74,10 +90,10 @@ switch ($action) {
 			$attachment_array['payload']['template_type'] =  'list';
 			$attachment_array['payload']["top_element_style"] = "large";
 			$attachment_array['payload']['elements']  = $elements_array;
+			//array_push($list1,$attachment_array );
 
 
 			$resArr['messages'][]['attachment']= $attachment_array;
-			
 		}
 
 		echo json_encode($resArr);	
