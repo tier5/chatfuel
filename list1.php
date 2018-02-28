@@ -76,7 +76,7 @@ switch ($action) {
 					$elements_array[$counter]['buttons'][0]['type'] =  "URL";
 					$elements_array[$counter]['buttons'][0]['url']  =  "http://portal.tier5.in/employee_control/Employee";
 					$elements_array[$counter]['buttons'][0]['title']=  "View Website";
-					/*array_push($list1,$elements_array );
+					///*array_push($list1,$elements_array );
 					array_push($list3,$resArr );*/
 					$counter++;
 
