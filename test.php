@@ -45,7 +45,7 @@ switch ($action) {
 		$array1=json_decode($result);
 
 		
-		if (gettype($array1) === 'object') {
+		/*if (gettype($array1) === 'object') {
 			$msg = array('text' =>  "No Search Results!");
 			$parent = array();
 			array_push($parent,$msg);
@@ -60,7 +60,7 @@ switch ($action) {
 		
 	////	$resp_arr = json_decode($resp);
 		if(count($array1)){
-			$counter=count($array1);
+			$counter=count($array1);*/
 		
 	//	foreach ($array1 as $rkey => $rvalue) {
 		$btn_obj = new stdClass();
@@ -91,10 +91,10 @@ switch ($action) {
 		//	}
 
 		echo json_encode($list_view);
-		}
+	//	}
 
 			
-}
+//}
 	break;
 	
 	default:
