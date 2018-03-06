@@ -160,33 +160,68 @@ function agentList($resp = null) {
     if (count($resp)) {
         $elements = array();
         $resp = json_decode($resp);
+        $parent = array();
+        $elements_btn_array = [];
         if(isset($resp->success) && $resp->success) {
+            $text_obj_agent_name = new stdClass();
+            $text_obj_agent_name->text = $resp->results->data[0]->propertyadditional->ListAgentFullName;
+
+            $text_obj_phone_number = new stdClass();
+            $text_obj_phone_number->text = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+
+            $text_obj_office_name = new stdClass();
+            $text_obj_office_name->text = $resp->results->data[0]->propertyadditional->ListOfficeName;
+
+            array_push($parent,$text_obj_agent_name);
+            array_push($parent,$text_obj_phone_number);
+            array_push($parent,$text_obj_office_name);
+
+
             $btn_obj	= new stdClass();
             $btn_obj->type ="phone_number";
             $btn_obj->phone_number = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
             $btn_obj->title = "Call";
-            $elements_btn_array[0] = $btn_obj;
-            //array_push($elements_btn_array[0], $btn_obj);
+            array_push($elements_btn_array,$btn_obj);
+
+
+            $payload = new stdClass();
+            $payload->template_type = "button";
+            $payload->text = "Call Agent";
+            $payload->buttons = $elements_btn_array;
+
+            // configure chart
+            $attachment = new stdClass();
+            $attachment->type = "template";
+            $attachment->payload = $payload;
+            $buttons_view  = new stdClass();
+
+            $buttons_view->attachment = $attachment;
+            array_push($parent,$buttons_view);
+
+            $agent_detail = new stdClass();
+            $agent_detail->messages = $parent;
+            /*//array_push($elements_btn_array[0], $btn_obj);
             // creating element object
             $elem_objects = new stdClass();
             $elem_objects->title = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
             $elem_objects->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
             $elem_objects->subtitle = $resp->results->data[0]->propertyadditional->ListOfficeName;
             $elem_objects->buttons = $elements_btn_array;
+
+            $elem_objects2 = new stdClass();
+            $elem_objects2->title = $resp->results->data[0]->PublicAddress;
+            //$elem_objects2->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
+            $elem_objects2->subtitle = "List Price : $".$resp->results->data[0]->ListPrice;
+            array_push($elements, $elem_objects2);
             array_push($elements, $elem_objects);
             // payload
             $payload = new stdClass();
             $payload->template_type = "list";
             $payload->top_element_style = "large";
-            $payload->elements = $elements;
-            // configure chart
-            $attachment = new stdClass();
-            $attachment->type = "template";
-            $attachment->payload = $payload;
-            $list_view  = new stdClass();
-            $list_view->messages[] = ['attachment' => $attachment];
+            $payload->elements = $elements;*/
+
             header('Content-Type: application/json');
-            echo(json_encode($list_view));
+            echo(json_encode($agent_detail));
         } else {
             $msg = new stdClass();
             $msg->text = "No Search Results!";
