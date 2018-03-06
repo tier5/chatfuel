@@ -100,6 +100,11 @@ function request($url = null,$choice = 1,$per_page = 8) {
     }
 }
 
+/***
+ * Search on the basis of list id.
+ * @param null $resp
+ * @throws Exception
+ */
 function listidSearch($resp = null) {
     if(is_null($resp)){
         throw new Exception("No response found.", 1);
@@ -163,30 +168,30 @@ function agentList($resp = null) {
         $parent = array();
         $elements_btn_array = [];
         if(isset($resp->success) && $resp->success) {
-            $text_obj_agent_name = new stdClass();
-            $text_obj_agent_name->text = $resp->results->data[0]->propertyadditional->ListAgentFullName;
+            //$text_obj_agent_details = new stdClass();
+            //$text_obj_agent_details->text = "Agent Name : ".(!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Not Available '." Phone Number : ".(!empty($resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone)) ? $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone : 'Not Available '." Office Name : ".(!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Not Available';
 
-            $text_obj_phone_number = new stdClass();
-            $text_obj_phone_number->text = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+            //$text_obj_phone_number = new stdClass();
+            //$text_obj_phone_number->text = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
 
-            $text_obj_office_name = new stdClass();
-            $text_obj_office_name->text = $resp->results->data[0]->propertyadditional->ListOfficeName;
+            //$text_obj_office_name = new stdClass();
+            //$text_obj_office_name->text = $resp->results->data[0]->propertyadditional->ListOfficeName;
 
-            array_push($parent,$text_obj_agent_name);
-            array_push($parent,$text_obj_phone_number);
-            array_push($parent,$text_obj_office_name);
+            //array_push($parent,$text_obj_agent_details);
+            //array_push($parent,$text_obj_phone_number);
+            //array_push($parent,$text_obj_office_name);
 
 
             $btn_obj	= new stdClass();
             $btn_obj->type ="phone_number";
             $btn_obj->phone_number = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
-            $btn_obj->title = "Call";
+            $btn_obj->title = "Call Agent";
             array_push($elements_btn_array,$btn_obj);
 
 
             $payload = new stdClass();
             $payload->template_type = "button";
-            $payload->text = "Call Agent";
+            $payload->text = "Agent Name : ".((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Not Available ').", Phone Number : ".((!empty($resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone)) ? $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone : 'Not Available ').", Office Name : ".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Not Available');
             $payload->buttons = $elements_btn_array;
 
             // configure chart
@@ -279,9 +284,10 @@ function listingIdSearchButtons($resp_arr) {
 
 function listingIdFirstSearchElement($resp_arr,$elements_btn_array) {
     $elem_objects = new stdClass();
-    $elem_objects->title = $resp_arr->results->data[0]->PublicAddress;
-    $elem_objects->image_url =  convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image);
-    $elem_objects->subtitle = "List Price : $".$resp_arr->results->data[0]->ListPrice;
+    $elem_objects->title = (!empty($resp_arr->results->data[0]->PublicAddress)) ? $resp_arr->results->data[0]->PublicAddress :
+                            ((!empty($resp_arr->results->data[0]->StreetNumber) || !empty($resp_arr->results->data[0]->StreetName) || !empty($resp_arr->results->data[0]->City) || !empty($resp_arr->results->data[0]->PostalCode)) ? $resp_arr->results->data[0]->StreetNumber." ".$resp_arr->results->data[0]->StreetName." ".$resp_arr->results->data[0]->City." ".$resp_arr->results->data[0]->PostalCode : 'None');
+    $elem_objects->image_url =  (!empty($resp_arr->results->data[0]->propertyimage[0]->Encoded_image)) ? convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image) : 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
+    $elem_objects->subtitle = "List Price : $".(!empty($resp_arr->results->data[0]->ListPrice)) ? $resp_arr->results->data[0]->ListPrice : '0';
     $elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
