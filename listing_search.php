@@ -103,8 +103,8 @@ function listidSearch($resp = null) {
             $elements_btn_array = listingIdSearchButtons($resp);
             $elem_objects       = listingIdFirstSearchElement($resp,$elements_btn_array);
             array_push($elements, $elem_objects);
-            $elem_objects       = listingIdSecondSearchElement($resp,$elements_btn_array);
-            array_push($elements, $elem_objects);
+           // $elem_objects       = listingIdSecondSearchElement($resp,$elements_btn_array);
+           // array_push($elements, $elem_objects);
             // payload
             $payload = new stdClass();
             $payload->template_type = "generic";
@@ -153,14 +153,21 @@ function listingIdSearchButtons($resp_arr) {
     $btn_obj_agent              = new stdClass();
     $btn_obj_agent->type        = "show_block";
     $btn_obj_agent->block_names = ["View Listing Agent"];
+    $btn_obj_agent->title        = "Agent Details";
 
-    $btn_obj_virtual_tour	    = new stdClass();
-    $btn_obj_virtual_tour->type  ="web_url";
-    $btn_obj_virtual_tour->url   = "https://www.propertypanorama.com/instaview/las/".$resp_arr->results->data[0]->MLSNumber;
-    $btn_obj_virtual_tour->title = "Virtual Tour";
+    if(!empty($resp_arr->results->data[0]->VirtualTourLink)){
+        $btn_obj_virtual_tour	    = new stdClass();
+        $btn_obj_virtual_tour->type  ="web_url";
+        $btn_obj_virtual_tour->url   = $resp_arr->results->data[0]->VirtualTourLink;
+        $btn_obj_virtual_tour->title = "Virtual Tour";
+    }
 
     array_push($elements_btn_array,$btn_obj_details);
-    array_push($elements_btn_array,$btn_obj_virtual_tour);
+    array_push($elements_btn_array,$btn_obj_agent);
+
+    if(!empty($resp_arr->results->data[0]->VirtualTourLink) && isset($btn_obj_virtual_tour)) {
+        array_push($elements_btn_array, $btn_obj_virtual_tour);
+    }
 
     return $elements_btn_array;
 }
@@ -170,7 +177,7 @@ function listingIdFirstSearchElement($resp_arr,$elements_btn_array) {
     $elem_objects = new stdClass();
     $elem_objects->title = $resp_arr->results->data[0]->PublicAddress;
     $elem_objects->image_url =  convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image);
-    $elem_objects->subtitle = "List Price : ".$resp_arr->results->data[0]->ListPrice.'\n Property Type : '.$resp_arr->results->data[0]->propertyfeature->PropertyType;
+    $elem_objects->subtitle = "List Price : ".$resp_arr->results->data[0]->ListPrice;
     $elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
