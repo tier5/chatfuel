@@ -191,7 +191,7 @@ function agentList($resp = null) {
 
             $payload = new stdClass();
             $payload->template_type = "button";
-            $payload->text = "Agent Name : ".((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Not Available ').", Phone Number : ".((!empty($resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone)) ? $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone : 'Not Available ').", Office Name : ".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Not Available');
+            $payload->text = ((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Agent name not available ').",".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Office name not available');
             $payload->buttons = $elements_btn_array;
 
             // configure chart
@@ -287,7 +287,7 @@ function listingIdFirstSearchElement($resp_arr,$elements_btn_array) {
     $elem_objects->title = (!empty($resp_arr->results->data[0]->PublicAddress)) ? $resp_arr->results->data[0]->PublicAddress :
                             ((!empty($resp_arr->results->data[0]->StreetNumber) || !empty($resp_arr->results->data[0]->StreetName) || !empty($resp_arr->results->data[0]->City) || !empty($resp_arr->results->data[0]->PostalCode)) ? $resp_arr->results->data[0]->StreetNumber." ".$resp_arr->results->data[0]->StreetName." ".$resp_arr->results->data[0]->City." ".$resp_arr->results->data[0]->PostalCode : 'None');
     $elem_objects->image_url =  (!empty($resp_arr->results->data[0]->propertyimage[0]->Encoded_image)) ? convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image) : 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
-    $elem_objects->subtitle = "List Price : $".(!empty($resp_arr->results->data[0]->ListPrice)) ? $resp_arr->results->data[0]->ListPrice : '0';
+    $elem_objects->subtitle = "List Price : $ ".((!empty($resp_arr->results->data[0]->ListPrice)) ? $resp_arr->results->data[0]->ListPrice : '0');
     $elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
