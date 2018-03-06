@@ -37,12 +37,14 @@ switch ($action) {
 		$result = curl_exec($curl);
 		curl_close($curl);
 		
+		
+
 		$elements = array();
 		$elements_btn_array = array();
 		$messages = array();
 		$attachment_arr = array();
 		$array1=json_decode($result);
-		
+		$count=0;
 		/*if (gettype($array1) === 'object') {
 			$msg = array('text' =>  "No Search Results!");
 			$parent = array();
@@ -60,16 +62,18 @@ switch ($action) {
 			$counter=count($array1);*/
 		
 	//	foreach ($array1 as $rkey => $rvalue) {
-		
+
+		for($i=1;$i<=2;$i++)
+		{
 		$btn_obj = new stdClass();
 		$btn_obj->type="phone_number";
-		$btn_obj->phone_number= $array1[1]->office_phone_number;
+		$btn_obj->phone_number= $array1[$i]->office_phone_number;
 		$btn_obj->title="call";
 		$elements_btn_array[0]=$btn_obj;
 		$elem_objects = new stdClass();
-		$elem_objects->title =$array1[1]->full_name;
+		$elem_objects->title =$array1[$i]->full_name;
 		$elem_objects->image_url="http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
-		$elem_objects->subtitle=$array1[1]->office_name;
+		$elem_objects->subtitle=$array1[$i]->office_name;
 		$elem_objects->buttons = $elements_btn_array;
 		array_push($elements,$elem_objects);
 		$payload= new stdClass();
@@ -82,11 +86,13 @@ switch ($action) {
 		$list_view= new stdClass();
 		$list_view->messages[] = ['attachment' => $attachment];
 				
-		//	}
-		echo json_encode($list_view);
-	//	}
+			}	
+
+				echo json_encode($list_view);
 			
-//}
+	//	}
+		
+//	}
 	break;
 	
 	default:
