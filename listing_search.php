@@ -30,10 +30,17 @@ function processURL() {
     } else {
         $per_page = 7;
     }
+    if(isset($_GET['agent_search'])) {
+        $agent_search = $_GET['agent_search'];
+    }
     if (isset($_GET['listing_id'])) {
         $listing_id 	= $_GET['listing_id'];
         $url .= "listing_id=".$listing_id;
-        request($url,1);
+        if(!isset($agent_search)) {
+            request($url,1);
+        } else if(isset($agent_search) && $agent_search == true){
+            request($url,5);
+        }
     }
     if (isset($_GET['city'])) {
         $city 		= $_GET['city'];
@@ -80,6 +87,8 @@ function request($url = null,$choice = 1,$per_page = 8) {
         switch ($choice){
             case 1: listidSearch($resp);
                     break;
+            case 5: agentList($resp);
+                    break;
             default:listidSearch($resp);
                     break;
         }
@@ -103,8 +112,8 @@ function listidSearch($resp = null) {
             $elements_btn_array = listingIdSearchButtons($resp);
             $elem_objects       = listingIdFirstSearchElement($resp,$elements_btn_array);
             array_push($elements, $elem_objects);
-            $elem_objects       = listingIdSecondSearchElement($resp,$elements_btn_array);
-            array_push($elements, $elem_objects);
+           // $elem_objects       = listingIdSecondSearchElement($resp,$elements_btn_array);
+           // array_push($elements, $elem_objects);
             // payload
             $payload = new stdClass();
             $payload->template_type = "generic";
@@ -143,6 +152,66 @@ function listidSearch($resp = null) {
     }
 }
 
+function agentList($resp = null) {
+    if(is_null($resp)){
+        throw new Exception("No response found.", 1);
+    }
+
+    if (count($resp)) {
+        $elements = array();
+        $resp = json_decode($resp);
+        if(isset($resp->success) && $resp->success) {
+            $btn_obj	= new stdClass();
+            $btn_obj->type ="phone_number";
+            $btn_obj->phone_number = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+            $btn_obj->title = "Call";
+            $elements_btn_array[0] = $btn_obj;
+            //array_push($elements_btn_array[0], $btn_obj);
+            // creating element object
+            $elem_objects = new stdClass();
+            $elem_objects->title = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+            $elem_objects->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
+            $elem_objects->subtitle = $resp->results->data[0]->propertyadditional->ListOfficeName;
+            $elem_objects->buttons = $elements_btn_array;
+            array_push($elements, $elem_objects);
+            // payload
+            $payload = new stdClass();
+            $payload->template_type = "list";
+            $payload->top_element_style = "large";
+            $payload->elements = $elements;
+            // configure chart
+            $attachment = new stdClass();
+            $attachment->type = "template";
+            $attachment->payload = $payload;
+            $list_view  = new stdClass();
+            $list_view->messages[] = ['attachment' => $attachment];
+            header('Content-Type: application/json');
+            echo(json_encode($list_view));
+        } else {
+            $msg = new stdClass();
+            $msg->text = "No Search Results!";
+            $parent = array();
+            array_push($parent,$msg);
+            $obj  = new stdClass();
+            $obj->messages = $parent;
+            $variables_obj = new stdClass();
+            $variables_obj->demo  =404;
+            $obj->set_attributes = $variables_obj;
+            header('Content-Type: application/json');
+            echo(json_encode($obj));
+        }
+    } else {
+        $msg = new stdClass();
+        $msg->text = "No Search Results!";
+        $parent = array();
+        array_push($parent,$msg);
+        $obj  = new stdClass();
+        $obj->messages = $parent;
+        header('Content-Type: application/json');
+        echo(json_encode($obj));
+    }
+}
+
 function listingIdSearchButtons($resp_arr) {
     $elements_btn_array = [];
     $btn_obj_details	    = new stdClass();
@@ -153,14 +222,21 @@ function listingIdSearchButtons($resp_arr) {
     $btn_obj_agent              = new stdClass();
     $btn_obj_agent->type        = "show_block";
     $btn_obj_agent->block_names = ["View Listing Agent"];
+    $btn_obj_agent->title        = "Agent Details";
 
-    $btn_obj_virtual_tour	    = new stdClass();
-    $btn_obj_virtual_tour->type  ="web_url";
-    $btn_obj_virtual_tour->url   = "https://www.propertypanorama.com/instaview/las/".$resp_arr->results->data[0]->MLSNumber;
-    $btn_obj_virtual_tour->title = "Virtual Tour";
+    if(!empty($resp_arr->results->data[0]->VirtualTourLink)){
+        $btn_obj_virtual_tour	    = new stdClass();
+        $btn_obj_virtual_tour->type  ="web_url";
+        $btn_obj_virtual_tour->url   = $resp_arr->results->data[0]->VirtualTourLink;
+        $btn_obj_virtual_tour->title = "Virtual Tour";
+    }
 
     array_push($elements_btn_array,$btn_obj_details);
-    array_push($elements_btn_array,$btn_obj_virtual_tour);
+    array_push($elements_btn_array,$btn_obj_agent);
+
+    if(!empty($resp_arr->results->data[0]->VirtualTourLink) && isset($btn_obj_virtual_tour)) {
+        array_push($elements_btn_array, $btn_obj_virtual_tour);
+    }
 
     return $elements_btn_array;
 }
@@ -170,7 +246,7 @@ function listingIdFirstSearchElement($resp_arr,$elements_btn_array) {
     $elem_objects = new stdClass();
     $elem_objects->title = $resp_arr->results->data[0]->PublicAddress;
     $elem_objects->image_url =  convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image);
-    $elem_objects->subtitle = "List Price : ".$resp_arr->results->data[0]->ListPrice.'\n Property Type : '.$resp_arr->results->data[0]->propertyfeature->PropertyType;
+    $elem_objects->subtitle = "List Price : $".$resp_arr->results->data[0]->ListPrice;
     $elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
