@@ -134,7 +134,7 @@ function processOutput($resp = null) {
 					for ($i=$paginate_start; $i < $paginate_end ; $i++) { 
 						$btn_obj	= new stdClass();
 						$btn_obj->type ="phone_number";
-						$btn_obj->url = $resp_arr[$i]->office_phone_number;
+						$btn_obj->phone_number = $resp_arr[$i]->office_phone_number;
 						$btn_obj->title = "Call";
 						$elements_btn_array[0] = $btn_obj;
 						//array_push($elements_btn_array[0], $btn_obj);
