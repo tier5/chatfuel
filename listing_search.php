@@ -101,7 +101,9 @@ function listidSearch($resp = null) {
         $resp = json_decode($resp);
         if(isset($resp->success) && $resp->success) {
             $elements_btn_array = listingIdSearchButtons($resp);
-            $elem_objects       = listingIdSearchElements($resp,$elements_btn_array);
+            $elem_objects       = listingIdFirstSearchElement($resp,$elements_btn_array);
+            array_push($elements, $elem_objects);
+            $elem_objects       = listingIdSecondSearchElement($resp,$elements_btn_array);
             array_push($elements, $elem_objects);
             // payload
             $payload = new stdClass();
@@ -114,9 +116,11 @@ function listidSearch($resp = null) {
             $attachment->payload = $payload;
             $gallery_view  = new stdClass();
             $gallery_view->messages[] = ['attachment' => $attachment];
-            print_r(json_encode($gallery_view));
+            header('Content-Type: application/json');
+            echo(json_encode($gallery_view));
         } else {
-            $msg = array('text' =>  "No Search Results!");
+            $msg = new stdClass();
+            $msg->text = "No Search Results!";
             $parent = array();
             array_push($parent,$msg);
             $obj  = new stdClass();
@@ -124,19 +128,23 @@ function listidSearch($resp = null) {
             $variables_obj = new stdClass();
             $variables_obj->demo  =404;
             $obj->set_attributes = $variables_obj;
-            print_r(json_encode($obj));
+            header('Content-Type: application/json');
+            echo(json_encode($obj));
         }
     } else {
-        $msg = array('text' =>  "No Search Results!");
+        $msg = new stdClass();
+        $msg->text = "No Search Results!";
         $parent = array();
         array_push($parent,$msg);
         $obj  = new stdClass();
         $obj->messages = $parent;
-        print_r(json_encode($obj));
+        header('Content-Type: application/json');
+        echo(json_encode($obj));
     }
 }
 
 function listingIdSearchButtons($resp_arr) {
+    $elements_btn_array = [];
     $btn_obj_details	    = new stdClass();
     $btn_obj_details->type  ="web_url";
     $btn_obj_details->url   = "http://search.homelasvegas.com/idx/details/listing/b015/".$resp_arr->results->data[0]->MLSNumber;
@@ -151,19 +159,28 @@ function listingIdSearchButtons($resp_arr) {
     $btn_obj_virtual_tour->url   = "https://www.propertypanorama.com/instaview/las/".$resp_arr->results->data[0]->MLSNumber;
     $btn_obj_virtual_tour->title = "Virtual Tour";
 
-    $elements_btn_array[0] = $btn_obj_details;
-    $elements_btn_array[1] = $btn_obj_agent;
-    $elements_btn_array[2] = $btn_obj_virtual_tour;
+    array_push($elements_btn_array,$btn_obj_details);
+    array_push($elements_btn_array,$btn_obj_virtual_tour);
 
     return $elements_btn_array;
 }
 
-function listingIdSearchElements($resp_arr,$elements_btn_array) {
+
+function listingIdFirstSearchElement($resp_arr,$elements_btn_array) {
     $elem_objects = new stdClass();
     $elem_objects->title = $resp_arr->results->data[0]->PublicAddress;
     $elem_objects->image_url =  convertImageUrl($resp_arr->results->data[0]->propertyimage[0]->Encoded_image);
-    $elem_objects->subtitle = $resp_arr->results->data[0]->ListPrice.'\n'.$resp_arr->results->data[0]->propertyfeature->PropertyType;
+    $elem_objects->subtitle = "List Price : ".$resp_arr->results->data[0]->ListPrice.'\n Property Type : '.$resp_arr->results->data[0]->propertyfeature->PropertyType;
     $elem_objects->buttons = $elements_btn_array;
+    return $elem_objects;
+}
+
+function listingIdSecondSearchElement($resp_arr,$elements_btn_array) {
+    $elem_objects = new stdClass();
+    $elem_objects->title = $resp_arr->results->data[0]->PublicAddress;
+    $elem_objects->image_url =  convertImageUrl($resp_arr->results->data[0]->propertyimage[1]->Encoded_image);
+    $elem_objects->subtitle = 'List Agent FullName: '.$resp_arr->results->data[0]->propertyadditional->ListAgentFullName.'\n Work Phone : '.$resp_arr->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+    //$elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
 
