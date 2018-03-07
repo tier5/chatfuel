@@ -335,22 +335,21 @@ function listSearch($resp = null) {
                 //$counter = count($resp_arr);
                 //if (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
                     $gallery_view  = new stdClass();
-                    for ($i=$paginate_start; $i < $paginate_end ; $i++) {
-                        $elements_btn_array = createlistingSearchButtons($resp_arr[$i]);
-                        $elem_objects       = createlistingElement($resp_arr[$i],$elements_btn_array);
+                    foreach ($resp_arr as $data) {
+                        $elements_btn_array = createlistingSearchButtons($data);
+                        $elem_objects       = createlistingElement($data,$elements_btn_array);
                         array_push($elements, $elem_objects);
-
-                        $payload = new stdClass();
-                        $payload->template_type = "generic";
-                        $payload->image_aspect_ratio = "square";
-                        $payload->elements = $elements;
-
-                        $attachment = new stdClass();
-                        $attachment->type = "template";
-                        $attachment->payload = $payload;
-
-                        $gallery_view->messages[] = ['attachment' => $attachment];
                     }
+                    $payload = new stdClass();
+                    $payload->template_type = "generic";
+                    $payload->image_aspect_ratio = "square";
+                    $payload->elements = $elements;
+
+                    $attachment = new stdClass();
+                    $attachment->type = "template";
+                    $attachment->payload = $payload;
+
+                    $gallery_view->messages[] = ['attachment' => $attachment];
 
                     // if counter is more than 5 need to have a pagination
                     if ($page_count <= $resp->results->last_page) {
