@@ -89,6 +89,7 @@ function doRequest($my_url = null) {
 		));
 		// Send the request & save response to $resp
 		$resp = curl_exec($curl);
+	
 		processOutput($resp);
 		// Close request to clear up some resources
 			curl_close($curl);

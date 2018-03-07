@@ -37,6 +37,7 @@ switch ($action) {
 		$result = curl_exec($curl);
 		curl_close($curl);
 	  
+	  
 		
 		$array1=json_decode($result, True);
 		/*print_r($user_detail);*/
