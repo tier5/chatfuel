@@ -62,10 +62,13 @@ function processURL() {
         request($url,4);
     }
 
+    if(isset($_GET['agent_name']) && isset($_GET['agent_phn']) && isset($_GET['agent_off'])){
+        request($url,6);
+    }
+
     if (!isset($listing_id) && !isset($city) && !isset($postal_code) && !isset($address) && !strlen($listing_id) && !strlen($city) && !strlen($postal_code) && !strlen($address)) {
         throw new Exception("Error Processing Request. No search query given", 1);
     }
-
 }
 
 /**
@@ -91,14 +94,15 @@ function request($url = null,$choice = 1,$per_page = 8) {
         switch ($choice){
             case 1: listidSearch($resp);
                     break;
-            case 2: listSearch($resp);
+            case 2: listSearch($resp,"City");
                     break;
-            case 3: listSearch($resp);
+            case 3: listSearch($resp,"Postal Code");
                     break;
-            case 4: listSearch($resp);
+            case 4: listSearch($resp,"Address");
                     break;
-            case 5: agentList($resp);
-                    break;
+            case 5:
+            case 6: agentList($resp,$choice);
+                break;
             default:listidSearch($resp);
                     break;
         }
@@ -170,27 +174,31 @@ function listidSearch($resp = null) {
  * @param null $resp
  * @throws Exception
  */
-function agentList($resp = null) {
+function agentList($resp = null,$choice = null) {
     if(is_null($resp)){
         throw new Exception("No response found.", 1);
     }
 
-    if (count($resp)) {
-        $resp = json_decode($resp);
-        $parent = array();
-        $elements_btn_array = [];
-        if(isset($resp->success) && $resp->success) {
-
+    if($choice == 6) {
+        if($_GET['agent_phn'] == '0') {
+            $textobj = new stdClass();
+            $textobj->text = $_GET['agent_name'].",".$_GET['agent_off'];
+            array_push($parent,$msg);
+            $agent_detail = new stdClass();
+            $agent_detail->messages = $parent;
+            header('Content-Type: application/json');
+            echo(json_encode($agent_detail));
+        } else {
             $btn_obj	= new stdClass();
             $btn_obj->type ="phone_number";
-            $btn_obj->phone_number = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+            $btn_obj->phone_number = $_GET['agent_phn'];
             $btn_obj->title = "Call Agent";
             array_push($elements_btn_array,$btn_obj);
 
 
             $payload = new stdClass();
             $payload->template_type = "button";
-            $payload->text = ((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Agent name not available ').",".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Office name not available');
+            $payload->text = $_GET['agent_name'].",".$_GET['agent_off'];
             $payload->buttons = $elements_btn_array;
 
             // configure chart
@@ -206,6 +214,66 @@ function agentList($resp = null) {
             $agent_detail->messages = $parent;
             header('Content-Type: application/json');
             echo(json_encode($agent_detail));
+        }
+    } else {
+        if (count($resp)) {
+            $resp = json_decode($resp);
+            $parent = array();
+            $elements_btn_array = [];
+            if(isset($resp->success) && $resp->success) {
+                //if phone number is there
+                if(!empty($resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone)){
+                    $btn_obj	= new stdClass();
+                    $btn_obj->type ="phone_number";
+                    $btn_obj->phone_number = $resp->results->data[0]->propertyadditional->ListAgentDirectWorkPhone;
+                    $btn_obj->title = "Call Agent";
+                    array_push($elements_btn_array,$btn_obj);
+
+
+                    $payload = new stdClass();
+                    $payload->template_type = "button";
+                    $payload->text = ((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Agent name not available ').",".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Office name not available');
+                    $payload->buttons = $elements_btn_array;
+
+                    // configure chart
+                    $attachment = new stdClass();
+                    $attachment->type = "template";
+                    $attachment->payload = $payload;
+                    $buttons_view  = new stdClass();
+
+                    $buttons_view->attachment = $attachment;
+                    array_push($parent,$buttons_view);
+
+                    $agent_detail = new stdClass();
+                    $agent_detail->messages = $parent;
+                    header('Content-Type: application/json');
+                    echo(json_encode($agent_detail));
+
+                } else {
+
+                    $textobj = new stdClass();
+                    $textobj->text = ((!empty($resp->results->data[0]->propertyadditional->ListAgentFullName)) ? $resp->results->data[0]->propertyadditional->ListAgentFullName : 'Agent name not available ').",".((!empty($resp->results->data[0]->propertyadditional->ListOfficeName)) ? $resp->results->data[0]->propertyadditional->ListOfficeName : 'Office name not available');
+                    array_push($parent,$msg);
+                    $agent_detail = new stdClass();
+                    $agent_detail->messages = $parent;
+                    header('Content-Type: application/json');
+                    echo(json_encode($agent_detail));
+
+                }
+
+            } else {
+                $msg = new stdClass();
+                $msg->text = "No Search Results!";
+                $parent = array();
+                array_push($parent,$msg);
+                $obj  = new stdClass();
+                $obj->messages = $parent;
+                $variables_obj = new stdClass();
+                $variables_obj->demo  =404;
+                $obj->set_attributes = $variables_obj;
+                header('Content-Type: application/json');
+                echo(json_encode($obj));
+            }
         } else {
             $msg = new stdClass();
             $msg->text = "No Search Results!";
@@ -213,22 +281,11 @@ function agentList($resp = null) {
             array_push($parent,$msg);
             $obj  = new stdClass();
             $obj->messages = $parent;
-            $variables_obj = new stdClass();
-            $variables_obj->demo  =404;
-            $obj->set_attributes = $variables_obj;
             header('Content-Type: application/json');
             echo(json_encode($obj));
         }
-    } else {
-        $msg = new stdClass();
-        $msg->text = "No Search Results!";
-        $parent = array();
-        array_push($parent,$msg);
-        $obj  = new stdClass();
-        $obj->messages = $parent;
-        header('Content-Type: application/json');
-        echo(json_encode($obj));
     }
+
 }
 
 /***
@@ -248,7 +305,7 @@ function listingIdSearchButtons($resp_arr) {
     $btn_obj_agent->block_names = ["View Listing Agent"];
     $btn_obj_agent->title        = "Agent Details";
 
-    if(!empty($resp_arr->results->data[0]->VirtualTourLink)){
+    if($resp_arr->Status == "History" || !empty($resp_arr->results->data[0]->VirtualTourLink)){
         $btn_obj_virtual_tour	    = new stdClass();
         $btn_obj_virtual_tour->type  ="web_url";
         $btn_obj_virtual_tour->url   = $resp_arr->results->data[0]->VirtualTourLink;
@@ -299,12 +356,13 @@ function convertImageUrl($encodedImage){
 }
 
 /***
+ * Creates the response for chatfuel on the basis of list search for postal code, address and city
  * list search
  * @param null $resp
  * @throws Exception
  */
-function listSearch($resp = null) {
-    if(is_null($resp)){
+function listSearch($resp = null,$choice = null) {
+    if(is_null($resp) || is_null($choice)){
         throw new Exception("No response found.", 1);
     }
     if (count($resp)) {
@@ -336,7 +394,7 @@ function listSearch($resp = null) {
                 //if (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
                     $gallery_view  = new stdClass();
                     foreach ($resp_arr as $data) {
-                        $elements_btn_array = createlistingSearchButtons($data);
+                        $elements_btn_array = createlistingSearchButtons($data,$choice);
                         $elem_objects       = createlistingElement($data,$elements_btn_array);
                         array_push($elements, $elem_objects);
                     }
@@ -406,7 +464,12 @@ function listSearch($resp = null) {
     }
 }
 
-function createlistingSearchButtons($resp_arr) {
+/***
+ * Creates the response for buttons for the listing search on the basis of postal code, address and city
+ * @param $resp_arr
+ * @return array
+ */
+function createlistingSearchButtons($resp_arr,$choice) {
     $elements_btn_array = [];
     $btn_obj_details	    = new stdClass();
     $btn_obj_details->type  ="web_url";
@@ -414,11 +477,17 @@ function createlistingSearchButtons($resp_arr) {
     $btn_obj_details->title = "View Listing Details";
 
     $btn_obj_agent              = new stdClass();
+    $set_attributes             = new stdClass();
+    $set_attributes->agent_name = ((!empty($resp_arr->propertyadditional->ListAgentFullName)) ? $resp_arr->propertyadditional->ListAgentFullName : 'Agent name not available ');
+    $set_attributes->agent_off_name = ((!empty($resp_arr->propertyadditional->ListOfficeName)) ? $resp_arr->propertyadditional->ListOfficeName : 'Office name not available');
+    $set_attributes->agent_phn_no = (!empty($resp_arr->propertyadditional->ListAgentDirectWorkPhone)) ? $resp_arr->propertyadditional->ListAgentDirectWorkPhone : '0';
+    $btn_obj_agent->set_attributes   = $set_attributes;
     $btn_obj_agent->type        = "show_block";
-    $btn_obj_agent->block_names = ["View Listing Agent"];
+    $btn_obj_agent->block_names = ["View Listing Agent ".$choice];
     $btn_obj_agent->title        = "Agent Details";
 
-    if(!empty($resp_arr->VirtualTourLink)){
+
+    if($resp_arr->Status == "History" || !empty($resp_arr->VirtualTourLink)){
         $btn_obj_virtual_tour	    = new stdClass();
         $btn_obj_virtual_tour->type  ="web_url";
         $btn_obj_virtual_tour->url   = $resp_arr->VirtualTourLink;
@@ -446,7 +515,7 @@ function createlistingElement($resp_arr,$elements_btn_array) {
     $elem_objects->title = (!empty($resp_arr->PublicAddress)) ? $resp_arr->PublicAddress :
         ((!empty($resp_arr->StreetNumber) || !empty($resp_arr->StreetName) || !empty($resp_arr->City) || !empty($resp_arr->PostalCode)) ? $resp_arr->StreetNumber." ".$resp_arr->StreetName." ".$resp_arr->City." ".$resp_arr->PostalCode : 'None');
     $elem_objects->image_url =  (!empty($resp_arr->propertyimage[0]->Encoded_image)) ? convertImageUrl($resp_arr->propertyimage[0]->Encoded_image) : 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
-    $elem_objects->subtitle = "List Price : $".(!empty($resp_arr->ListPrice)) ? $resp_arr->ListPrice : '0';
+    $elem_objects->subtitle = "List Price : $ ".((!empty($resp_arr->ListPrice)) ? $resp_arr->ListPrice : '0');
     $elem_objects->buttons = $elements_btn_array;
     return $elem_objects;
 }
