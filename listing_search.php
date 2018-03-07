@@ -290,7 +290,7 @@ function createListingIdSearchButtons($resp_arr) {
     $btn_obj_agent->block_names = ["View Listing Agent"];
     $btn_obj_agent->title        = "Agent Details";
 
-    if($resp_arr->Status == "Active" && !empty($resp_arr->results->data[0]->VirtualTourLink)){
+    if($resp_arr->results->data[0]->Status == "Active" && !empty($resp_arr->results->data[0]->VirtualTourLink)){
         $btn_obj_virtual_tour	    = new stdClass();
         $btn_obj_virtual_tour->type  ="web_url";
         $btn_obj_virtual_tour->url   = $resp_arr->results->data[0]->VirtualTourLink;
