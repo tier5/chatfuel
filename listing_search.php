@@ -47,7 +47,7 @@ function processURL() {
         }
     }
     if (isset($_GET['city'])) {
-        $city 		= $_GET['city'];
+        $city 		= str_replace(' ', '', $_GET['city']);
         $url .= "city=".$city."&per_page=5&page=".$page_count;
         request($url,2);
     }
@@ -268,6 +268,8 @@ function agentListSearch($agent_name,$agent_office_name,$agent_phone_number) {
         header('Content-Type: application/json');
         echo(json_encode($agent_detail));
     } else {
+        $parent = [];
+        $elements_btn_array = [];
         $btn_obj = new stdClass();
         $btn_obj->type = "phone_number";
         $btn_obj->phone_number = $agent_phone_number;
@@ -313,7 +315,7 @@ function listingIdSearchButtons($resp_arr) {
     $btn_obj_agent->block_names = ["View Listing Agent"];
     $btn_obj_agent->title        = "Agent Details";
 
-    if($resp_arr->Status == "History" || !empty($resp_arr->results->data[0]->VirtualTourLink)){
+    if($resp_arr->Status != "Active" || !empty($resp_arr->results->data[0]->VirtualTourLink)){
         $btn_obj_virtual_tour	    = new stdClass();
         $btn_obj_virtual_tour->type  ="web_url";
         $btn_obj_virtual_tour->url   = $resp_arr->results->data[0]->VirtualTourLink;
@@ -375,22 +377,8 @@ function listSearch($resp = null,$choice = null) {
     }
     if (count($resp)) {
         $elements = array();
-        $elements_btn_array = array();
-        $paginate_start = 0;
-        $paginate_end  = 5;
         $page_count = 1;
-        $messages = array();
-        $attachment_arr = array();
         $resp = json_decode($resp);
-        $counter  = 0;
-        if (isset($_GET['start'])) {
-            $paginate_start = $_GET['start'];
-        }
-
-        if (isset($_GET['end'])) {
-            $paginate_end  = $_GET['end'];
-        }
-
         if(isset($_GET['page_count'])) {
             $page_count =$_GET['page_count'];
         }
@@ -398,8 +386,6 @@ function listSearch($resp = null,$choice = null) {
         if (isset($resp->success) && $resp->success) {
             $resp_arr = $resp->results->data;
             if (count($resp_arr)) {
-                //$counter = count($resp_arr);
-                //if (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
                     $gallery_view  = new stdClass();
                     foreach ($resp_arr as $data) {
                         $elements_btn_array = createlistingSearchButtons($data,$choice);
@@ -420,11 +406,8 @@ function listSearch($resp = null,$choice = null) {
                     // if counter is more than 5 need to have a pagination
                     if ($page_count <= $resp->results->last_page) {
                         // set user attribute here
-                        $variables_obj = new stdClass();
                         $variables_obj1 = new stdClass();
                         $variables_obj1->demo  =200;
-                        //$variables_obj1->page_strt = $paginate_start+5;
-                        //$variables_obj1->page_end = $paginate_end+5;
                         $variables_obj1->page_count = $page_count + 1;
                         $gallery_view->set_attributes = $variables_obj1;
                     } else {
@@ -434,18 +417,6 @@ function listSearch($resp = null,$choice = null) {
                     }
                     header('Content-Type: application/json');
                     echo(json_encode($gallery_view));
-                /*} else {
-                    $msg = new stdClass();
-                    $msg->text =  "No More Results!";
-                    $parent = array();
-                    array_push($parent,$msg);
-                    $obj  = new stdClass();
-                    $obj->messages = $parent;
-                    $variables_obj = new stdClass();
-                    $variables_obj->demo  =404;
-                    $obj->set_attributes = $variables_obj;
-                    print_r(json_encode($obj));
-                }*/
 
             } else {
                 $msg = new stdClass();
@@ -495,7 +466,7 @@ function createlistingSearchButtons($resp_arr,$choice) {
     $btn_obj_agent->title        = "Agent Details";
 
 
-    if($resp_arr->Status == "History" || !empty($resp_arr->VirtualTourLink)){
+    if($resp_arr->Status != "Active" || !empty($resp_arr->VirtualTourLink)){
         $btn_obj_virtual_tour	    = new stdClass();
         $btn_obj_virtual_tour->type  ="web_url";
         $btn_obj_virtual_tour->url   = $resp_arr->VirtualTourLink;
