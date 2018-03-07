@@ -49,21 +49,29 @@ function processURL() {
     if (isset($_GET['city'])) {
         $city 		= $_GET['city'];
         $url .= "city=".$city."&per_page=5&page=".$page_count;
-        request($url,2);
+        if(isset($_GET['agent_name']) && isset($_GET['agent_phn']) && isset($_GET['agent_off'])){
+            request($url,6);
+        } else {
+            request($url,2);
+        }
     }
     if (isset($_GET['postal_code'])) {
         $postal_code	= $_GET['postal_code'];
         $url .= "postal_code=".$postal_code."&per_page=5&page=".$page_count;
-        request($url,3);
+        if(isset($_GET['agent_name']) && isset($_GET['agent_phn']) && isset($_GET['agent_off'])){
+            request($url,6);
+        } else {
+            request($url,3);
+        }
     }
     if (isset($_GET['address'])) {
         $address	= $_GET['address'];
         $url .= "address=".$address."&per_page=5&page=".$page_count;
-        request($url,4);
-    }
-
-    if(isset($_GET['agent_name']) && isset($_GET['agent_phn']) && isset($_GET['agent_off'])){
-        request($url,6);
+        if(isset($_GET['agent_name']) && isset($_GET['agent_phn']) && isset($_GET['agent_off'])){
+            request($url,6);
+        } else {
+            request($url,4);
+        }
     }
 
     if (!isset($listing_id) && !isset($city) && !isset($postal_code) && !isset($address) && !strlen($listing_id) && !strlen($city) && !strlen($postal_code) && !strlen($address)) {
@@ -77,7 +85,7 @@ function processURL() {
  * @return array
  * @throws exception if no url has been passed
  */
-function request($url = null,$choice = 1,$per_page = 8) {
+function request($url = null,$choice = 1) {
     if(is_null($url)){
         throw new Exception("No URL has been passed to make a request", 1);
     }
