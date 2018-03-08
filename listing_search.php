@@ -5,9 +5,9 @@ error_reporting(E_ALL);
 /**
  * @const BASE_API_URL
  */
-const BASE_API_URL = "http://rets-cache.homelasvegas.com/api/rets/v2/global_search?";
+const BASE_API_URL = "http://rets-cache.homelasvegas.com/api/rets/v2/global_listings_search?";
 /***
- *
+ * @const UPLOADS_DIR
  */
 const UPLOADS_DIR = __DIR__."/uploads/";
 try {
@@ -383,7 +383,7 @@ function listingSearch($resp = null,$choice = null) {
                 $gallery_view->messages[] = ['attachment' => $attachment];
 
                 // if counter is more than 5 need to have a pagination
-                if ($page_count <= $resp->results->last_page) {
+                if ($page_count < $resp->results->last_page) {
                     // set user attribute here
                     $variables_obj1 = new stdClass();
                     $variables_obj1->demo  =200;
