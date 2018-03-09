@@ -9,7 +9,7 @@
 </body>
 
 <?php
-include 'conn1.php';
+/*include 'conn1.php';*/
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 if(isset($_POST["action"]))
