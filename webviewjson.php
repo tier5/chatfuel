@@ -1,15 +1,5 @@
-<body>
-<script type="text/javascript">
-  function submitForm(action) {
-    var form = document.getElementById('form1');
-    form.action = action;
-    form.submit();
-  }
-</script>
-</body>
-
 <?php
-/*include 'conn1.php';*/
+include 'conn1.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 if(isset($_POST["action"]))
@@ -21,7 +11,7 @@ switch ($action) {
 	case 'bot':
 		$data=$_GET;
 		$sql = "SELECT * FROM basic ";
-        $result = $conn->query($sql);
+        $result = $conn1->query($sql);
         $messages = array();
 	  	if ($result->num_rows > 0) {
 		     $bot_detail=array();
