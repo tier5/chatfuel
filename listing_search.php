@@ -14,7 +14,8 @@ try {
     processURL();
 } catch (Exception $e) {
     // handling exception
-    $error = array('text' =>  $e->getMessage());
+    $error = new stdClass;
+    $error->text =  $e->getMessage();
     $parent = array();
     array_push($parent,$error);
     $obj  = new stdClass();
