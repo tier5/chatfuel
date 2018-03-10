@@ -5,14 +5,15 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 if(isset($_POST["action"]))
 $action=$_POST["action"];
+
 elseif (isset($_GET["action"])) {
 	$action=$_GET["action"];
 }
 switch ($action) {
 	case 'bot':
 		$data=$_GET;
-		$phone1 = $_SESSION['varname'];
-		$sql = "SELECT * FROM basic WHERE phone='$phone1' ";
+		$last_id = $_SESSION['last_id'];
+		$sql = "SELECT * FROM basic WHERE id='$last_id' ";
         $result = $conn->query($sql);
         $messages = array();
 	  	if ($result->num_rows > 0) {
