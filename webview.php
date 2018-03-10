@@ -10,7 +10,7 @@ if($_POST)
 	$address=$_POST["comment"];
 	$password1=md5($password);
 	$phone=$_POST["phone"];
-	/*$_SESSION['last_id'] = $last_id;*/
+	$_SESSION['last_id'] = $last_id;
 
 	$query="INSERT INTO basic (name,email,password,gender,address,phone)
 VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
