@@ -13,7 +13,8 @@ switch ($action) {
 	case 'bot':
 		$data=$_GET;
 		$last_id = $_SESSION['last_id'];
-		$sql = "SELECT * FROM basic WHERE id='$last_id' ";
+	/*	$sql = "SELECT * FROM basic WHERE id='$last_id' ";*/
+			$sql = "SELECT * FROM basic ";
         $result = $conn->query($sql);
         $messages = array();
 	  	if ($result->num_rows > 0) {
@@ -24,7 +25,7 @@ switch ($action) {
 
 		       $btn_obj = new stdClass();
 					 $btn_obj->type="text";
-		       $btn_obj="EmpName=".$row['name'].","."Email=".$row['email'].","."Gender:".$row['gender'].","."Address=".$row['address'];
+		       $btn_obj="EmpName=".$row['name'].","."Email=".$row['email'].","."Gender:".$row['gender'].","."Address=".$row['address'].","."Phone=".$row['phone'];
 		       $list_view= new stdClass();
 					 $list_view->messages[] = ['text' => $btn_obj];
 		    }
