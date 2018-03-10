@@ -12,7 +12,7 @@ elseif (isset($_GET["action"])) {
 switch ($action) {
 	case 'bot':
 		$data=$_GET;
-		$last_id = $_SESSION['last_id'];
+	/*	$last_id = $_SESSION['last_id'];*/
 	/*	$sql = "SELECT * FROM basic WHERE id='$last_id' ";*/
 			$sql = "SELECT * FROM basic ";
         $result = $conn->query($sql);
