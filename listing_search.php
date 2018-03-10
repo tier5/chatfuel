@@ -348,6 +348,7 @@ function convertImageUrl($encodedImage){
  * @throws Exception
  */
 function listingSearch($resp = null,$choice = null) {
+
     if(is_null($resp) || is_null($choice)){
         throw new Exception("No response found.", 1);
     }
@@ -355,6 +356,7 @@ function listingSearch($resp = null,$choice = null) {
         $elements = array();
         $page_count = 1;
         $resp = json_decode($resp);
+
         //Checks the current page for the response
         if(isset($_GET['page_count'])) {
             $page_count =$_GET['page_count'];
@@ -411,7 +413,18 @@ function listingSearch($resp = null,$choice = null) {
                 $obj->set_attributes = $variables_obj;
                 print_r(json_encode($obj));
             }
-
+        } else {
+            //No results found.
+            $msg = new stdClass();
+            $msg->text =  "No Search Results!";
+            $parent = array();
+            array_push($parent,$msg);
+            $obj  = new stdClass();
+            $obj->messages = $parent;
+            $variables_obj = new stdClass();
+            $variables_obj->demo  =404;
+            $obj->set_attributes = $variables_obj;
+            print_r(json_encode($obj));
         }
     } else {
         //No results found.
