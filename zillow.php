@@ -143,14 +143,15 @@ function createResponse($response) {
     $elements = new stdClass();
     $elements->title = $response->address->street.",".$response->address->zipcode.",".$response->address->city.",".$response->address->state;
     $elements->subtitle = 'Range: $'.$response->zestimate->valuationRange->low.' - $'.$response->zestimate->valuationRange->high;
-    $elements->image = 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
+    $elements->image_url = 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
+    $elements->buttons = $buttons;
 
     array_push($elementsArray,$elements);
 
     $payload = new stdClass();
     $payload->template_type = 'generic';
-    $payload->template_type = 'square';
-    $payload->elements = $elements;
+    $payload->image_aspect_ratio = 'square';
+    $payload->elements = $elementsArray;
 
     $attachment = new stdClass();
     $attachment->type = "template";
