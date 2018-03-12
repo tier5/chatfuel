@@ -259,20 +259,20 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
     window.extAsyncInit = function() {
         // the Messenger Extensions JS SDK is done loading
 
-        var handleUserAction = function(psID) {
+        /*var handleUserAction = function(psID) {
             element = document.getElementsByClassName('psid');
             var n;
             for (n = 0; n < element.length; ++n) {
                 element[n].value=psID;
             }
             MessengerExtensions.requestCloseBrowser();
-        };
+        };*/
 
         MessengerExtensions.getContext('228036937769463',
             function success(thread_context) {
                 console.log(thread_context);
                 console.log(thread_context.psid);
-                handleUserAction(thread_context.psid);
+               // handleUserAction(thread_context.psid);
                 psID = thread_context.psid;
             }, function error(error) {
                 console.log(error);
