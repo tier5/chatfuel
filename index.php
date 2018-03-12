@@ -100,7 +100,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
 
     <!-- Zillow Search -->
     <div class="row" id="zillow_search" style="display:none">
-        <form action="zillow.php" method="get">
+        <form action="processindex.php" method="get">
             <!-- Address -->
             <div class="form-group">
                 <div class="col-md-6">
@@ -120,6 +120,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                     <input type="text" name="zip" class="zillow_search_action" id="zillowActionTwo" placeholder="Enter Zip Code">
                 </div>
             </div>
+
+            <input type="hidden" name="psid" class="psid">
+            <input type="hidden" name="type" value="1">
             <!-- Zip -->
             <div class="form-group">
                 <div class="col-md-12">
@@ -139,7 +142,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
     <div class="row" id="listing_search_row_values" style="display:none">
         <!-- Listing ID -->
         <div class="col-md-12" id="listing_id_row">
-            <form action="listing_search.php" method="get">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="2">
                 <input type="text" name="listing_id" class="form-group" id="listing_id" placeholder="Listing id">
                 <input type="submit" value="Submit">
             </form>
@@ -148,7 +153,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         <!-- Listing ID -->
         <!-- City -->
         <div class="col-md-12" id="city_row">
-            <form action="listing_search.php" method="get">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="2">
                 <input type="text" name="city" class="form-group" id="city" placeholder="City">
                 <input type="submit" value="Submit">
             </form>
@@ -157,7 +164,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         <!-- City -->
         <!-- Postal Code -->
         <div class="col-md-12" id="postal_code_row">
-            <form action="listing_search.php" method="get">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="2">
                 <input type="text" name="postal_code" class="form-group" id="postal_code" placeholder="Postal Code">
                 <input type="submit" value="Submit">
             </form>
@@ -166,7 +175,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         <!-- Postal Code -->
         <!-- Address -->
         <div class="col-md-12" id="address_row">
-            <form action="listing_search.php" method="get">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="2">
                 <input type="text" name="address" class="form-group" id="address" placeholder="Address">
                 <input type="submit" value="Submit">
             </form>
@@ -205,8 +216,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
     <div class="row" id="realtor_search_row_values" style="display:none">
         <!-- First name -->
         <div class="col-md-12" id="first_name_row">
-            <form action="search.php" method="get">
-                <input type="hidden" name="action" class="form-group" id="action_fn" value="search">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="3">
                 <input type="text" name="first_name" class="form-group" id="first_name" placeholder="First Name">
                 <input type="submit" value="Submit">
             </form>
@@ -215,8 +227,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         <!-- First name -->
         <!-- Last name -->
         <div class="col-md-12" id="last_name_row">
-            <form action="search.php" method="get">
-                <input type="hidden" name="action" class="form-group" id="action_ln" value="search">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="3">
                 <input type="text" name="last_name" class="form-group" id="last_name" placeholder="Last Name">
                 <input type="submit" value="Submit">
             </form>
@@ -225,8 +238,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         <!-- Last name -->
         <!-- Office Name -->
         <div class="col-md-12" id="office_name_row">
-            <form action="search.php" method="get">
-                <input type="hidden" name="action" class="form-group" id="action_on" value="search">
+            <form action="processindex.php" method="get">
+                <input type="hidden" name="psid" class="psid">
+                <input type="hidden" name="type" value="3">
                 <input type="text" name="office_name" class="form-group" id="office_name" placeholder="Office Name">
                 <input type="submit" value="Submit">
             </form>
@@ -241,8 +255,30 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
+    var psID = '';
     window.extAsyncInit = function() {
         // the Messenger Extensions JS SDK is done loading
+
+        var handleUserAction = function(psID) {
+            element = document.getElementsByClassName('psid');
+            var n;
+            for (n = 0; n < element.length; ++n) {
+                element[n].value=psID;
+            }
+            MessengerExtensions.requestCloseBrowser();
+        };
+
+        MessengerExtensions.getContext('228036937769463',
+            function success(thread_context) {
+                console.log(thread_context);
+                console.log(thread_context.psid);
+                handleUserAction(thread_context.psid);
+                psID = thread_context.psid;
+            }, function error(error) {
+                console.log(error);
+            }
+        );
+
     };
 
     $(document).ready(function () {
@@ -311,6 +347,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#city_row').hide();
                         $('#postal_code_row').hide();
                         $('#address_row').hide();
+                        $('.psid').val(psID);
                         break;
 
             case '1':   $('#listing_search_row_values').show();
@@ -319,7 +356,8 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#city_row').show();
                         $('#postal_code_row').hide();
                         $('#address_row').hide();
-                break;
+                        $('.psid').val(psID);
+                        break;
 
             case '2':   $('#listing_search_row_values').show();
                         $('#postal_code').attr('required','required');
@@ -327,7 +365,8 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#city_row').hide();
                         $('#postal_code_row').show();
                         $('#address_row').hide();
-                break;
+                        $('.psid').val(psID);
+                        break;
 
             case '3':   $('#listing_search_row_values').show();
                         $('#address').attr('required','required');
@@ -335,6 +374,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#city_row').hide();
                         $('#postal_code_row').hide();
                         $('#address_row').show();
+                        $('.psid').val(psID);
                         break;
         }
     });
