@@ -320,6 +320,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#first_name_row').show();
                         $('#last_name_row').hide();
                         $('#office_name_row').hide();
+                        $('.psid').val(psID);
                         break;
 
             case '1':   $('#realtor_search_row_values').show();
@@ -327,6 +328,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#first_name_row').hide();
                         $('#last_name_row').show();
                         $('#office_name_row').hide();
+                        $('.psid').val(psID);
                         break;
 
             case '2':   $('#realtor_search_row_values').show();
@@ -334,6 +336,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#first_name_row').hide();
                         $('#last_name_row').hide();
                         $('#office_name_row').show();
+                        $('.psid').val(psID);
                         break;
         }
     });
