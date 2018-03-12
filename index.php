@@ -300,6 +300,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                         $('#listing_search_row_values').hide();
                         $('#listing_search_row').hide();
                         $('#realtor_search_row').hide();
+                        $('.psid').val(psID);
                         break;
             case '2':   $('#zillow_search').hide();
                         $('#listing_search_row_values').hide();

@@ -17,7 +17,7 @@ try{
 }
 
 function processSearch() {
-    if(isset($_GET['type']) && strlen($_GET['type']) > 0)  {
+    if(isset($_GET['type']))  {
         $type = $_GET['type'];
         switch ($type) {
             case '1': if(isset($_GET['address'])&& isset($_GET['zip'])) {
@@ -38,7 +38,5 @@ function processSearch() {
             case '2':
             case '3':
         }
-            var_dump($GLOBALS['BROADCAST_API_URL']);
-            die();
     }
 }
