@@ -24,8 +24,6 @@ function processSearch() {
                         $address = $_GET['address'];
                         $zip = $_GET['zip'];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Zillow Search&zillow-address='.$address.'&zillow-zip='.$zip;
-                        var_dump($broadcast_url);
-                        die();
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -34,14 +32,13 @@ function processSearch() {
                             CURLOPT_USERAGENT => 'Requesting search....'
                         ));
                         // Send the request & save response to $resp
-                        curl_exec($curl);
+                        $resp=curl_exec($curl);
                         curl_close($curl);
+                        var_dump($resp);die();
                       }
             case '2':if(isset($_GET['listing_id'])) {
                         $listing_id = $_GET['listing_id'];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Listing ID Search&listing-id='.$listing_id;
-                        var_dump($broadcast_url);
-                        die();
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -55,8 +52,6 @@ function processSearch() {
                     } else if(isset($_GET['city'])) {
                         $city = $_GET['city'];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'City Search&city-name='.$city;
-                        var_dump($broadcast_url);
-                        die();
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -70,8 +65,6 @@ function processSearch() {
                     } else if(isset($_GET['postal_code'])) {
                         $postal_code = $_GET['postal_code'];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Postal Code Search&postal-code='.$postal_code;
-                        var_dump($broadcast_url);
-                        die();
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
