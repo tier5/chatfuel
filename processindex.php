@@ -38,7 +38,7 @@ function processSearch() {
                       }
             case '2':if(isset($_GET['listing_id'])) {
                         $listing_id = $_GET['listing_id'];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Listing ID Search&listing-id='.$listing_id;
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5a9d2ee7e4b06f59551751ac&listing-id='.$listing_id;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -51,7 +51,7 @@ function processSearch() {
                         curl_close($curl);
                     } else if(isset($_GET['city'])) {
                         $city = $_GET['city'];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'City Search&city-name='.$city;
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5a9d68d0e4b06f5955df493a&city-name='.$city;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -64,7 +64,7 @@ function processSearch() {
                         curl_close($curl);
                     } else if(isset($_GET['postal_code'])) {
                         $postal_code = $_GET['postal_code'];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Postal Code Search&postal-code='.$postal_code;
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5a9fe7dce4b06f595e0a994e&postal-code='.$postal_code;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
@@ -77,9 +77,7 @@ function processSearch() {
                         curl_close($curl);
                     }else if(isset($_GET['address'])) {
                         $address = $_GET['address'];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Address Search&address-detail='.$address;
-                        var_dump($broadcast_url);
-                        die();
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5a9ff396e4b06f595e31aad3&address-detail='.$address;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
