@@ -23,7 +23,7 @@ function processSearch() {
             case '1': if(isset($_GET['address'])&& isset($_GET['zip'])) {
                         $address = $_GET['address'];
                         $zip = $_GET['zip'];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'Zillow Search&zillow-address='.$address.'&zillow-zip='.$zip;
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5aa3c253e4b094306e80db8d&zillow-address='.$address.'&zillow-zip='.$zip;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
