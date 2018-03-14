@@ -54,6 +54,12 @@
     			// console.log(formData);
     			$.post('/chatfuel/postBackChatfuel.php', formData, function(data){
     				console.log(data);
+    				MessengerExtensions.requestCloseBrowser(function () {
+		              console.log('Window will be closed');
+		            }, function (error) {
+		              console.log('There is an error');
+		              console.log(error);
+		            });
     			});
     		});
     	});
