@@ -6,17 +6,26 @@ $date 			= $_POST['date'];
 $time 			= $_POST['time'];
 $note 			= $_POST['note'];
 $full_name		= $f_name." ".$l_name;
-echo $full_name;
-$form_url 		= "https://api.chatfuel.com/bots/5a8aa514e4b05207d55947d6/users/1998661866829501/send?chatfuel_token=qwYLsCSz8hk4ytd6CPKP4C0oalstMnGdpDjF8YFHPHCieKNc0AfrnjVs91fGuH74&chatfuel_block_name=RESPONSE WEBVIEW&name=".$full_name."&phone_number=".$phone_number."&date_appo=".$date."&time_appo=".$time."&note_appo=".$note."";
+$form_url 		= "https://api.chatfuel.com/bots/5a8aa514e4b05207d55947d6/users/1998661866829501/send";
 
-$ch = curl_init();
+echo $form_url;
 
-curl_setopt($ch, CURLOPT_URL,$form_url);
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$data = array(
+	"chatfuel_token"		=>	"qwYLsCSz8hk4ytd6CPKP4C0oalstMnGdpDjF8YFHPHCieKNc0AfrnjVs91fGuH74",
+	"chatfuel_block_name" 	=>  "RESPONSE WEBVIEW",
+	"name"					=>   $full_name,
+	"phone_number"			=> 	 $phone_number,
+	"date_appo"				=>	 $date,
+	"time_appo"				=>   $time,
+	"note_appo"				=>   $note
+);
+$s = curl_init(); 
 
-$server_output = curl_exec ($ch);
-
-curl_close ($ch);
-
-echo $server_output;
+curl_setopt($s,CURLOPT_URL,$form_url); 
+curl_setopt($s,CURLOPT_HTTPHEADER,array('Content-Type:application/json'));
+curl_setopt($s,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($s, CURLOPT_PORT , 443); 
+curl_setopt($s, CURLOPT_POSTFIELDS, $data); 
+$my_resp = curl_exec($s);
+echo $my_resp;
+curl_close($s);  
