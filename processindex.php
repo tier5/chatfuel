@@ -8,7 +8,7 @@ const TOKEN = 'qwYLsCSz8hk4ytd6CPKP4C0oalstMnGdpDjF8YFHPHCieKNc0AfrnjVs91fGuH74'
 
 $psid = $_GET['psid'];
 
-$BROADCAST_API_URL = 'https://api.chatfuel.com/bots/'.BOT_ID.'/users/'.$psid.'/send';
+$BROADCAST_API_URL = 'https://api.chatfuel.com/bots/'.BOT_ID.'/users/'.$psid.'/send?';
 
 try{
     processSearch();
@@ -29,19 +29,18 @@ function processSearch() {
                             'zillow-address' => $address,
                             'zillow-zip' => $zip
                         ];
-                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5aa3c253e4b094306e80db8d&zillow-address='.$address.'&zillow-zip='.$zip;
-                        $curl = curl_init();
-                        // Set some options - we are passing in a useragent too here
-                        curl_setopt_array($curl, array(
-                            CURLOPT_RETURNTRANSFER => 1,
-                            CURLOPT_URL => $GLOBALS['BROADCAST_API_URL'],
-                            CURLOPT_POSTFIELDS => $request
-                        ));
-                        // Send the request & save response to $resp
-                        $resp=curl_exec($curl);
+                        $broadcast_url = $GLOBALS['BROADCAST_API_URL'];
+                        $postString = http_build_query($request, '', '&');
+                        $broadcast_url .= $postString;
+                        $curl = curl_init($broadcast_url);
+                        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+                        curl_setopt($curl, CURLOPT_POST, true);
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/jso'));
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        $response = curl_exec($curl);
                         curl_close($curl);
-                        var_dump($resp);die();
                       }
+                      break;
             case '2':if(isset($_GET['listing_id'])) {
                         $listing_id = $_GET['listing_id'];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5a9d2ee7e4b06f59551751ac&listing-id='.$listing_id;

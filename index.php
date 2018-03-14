@@ -126,7 +126,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
             <!-- Zip -->
             <div class="form-group">
                 <div class="col-md-12">
-                    <input type="submit">
+                    <input type="submit" class="submit">
                 </div>
             </div>
         </form>
@@ -146,7 +146,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="listing_id" class="form-group" id="listing_id" placeholder="Listing id">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromListingId"> Back </button>
         </div>
@@ -157,7 +157,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="city" class="form-group" id="city" placeholder="City">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromCity"> Back </button>
         </div>
@@ -168,7 +168,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="postal_code" class="form-group" id="postal_code" placeholder="Postal Code">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromPostalCode"> Back </button>
         </div>
@@ -179,7 +179,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="address" class="form-group" id="address" placeholder="Address">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromAddress"> Back </button>
         </div>
@@ -220,7 +220,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="first_name" class="form-group" id="first_name" placeholder="First Name">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromFirstName"> Back </button>
         </div>
@@ -231,7 +231,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="last_name" class="form-group" id="last_name" placeholder="Last Name">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromLastName"> Back </button>
         </div>
@@ -242,7 +242,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="office_name" class="form-group" id="office_name" placeholder="Office Name">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromOfficeName"> Back </button>
         </div>
