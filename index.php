@@ -100,7 +100,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
 
     <!-- Zillow Search -->
     <div class="row" id="zillow_search" style="display:none">
-        <form action="processindex.php" method="get">
+        <form>
             <!-- Address -->
             <div class="form-group">
                 <div class="col-md-6">
@@ -126,7 +126,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
             <!-- Zip -->
             <div class="form-group">
                 <div class="col-md-12">
-                    <input type="submit" class="submit">
+                    <input type="button" value="Submit" class="submit">
                 </div>
             </div>
         </form>
@@ -142,44 +142,44 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
     <div class="row" id="listing_search_row_values" style="display:none">
         <!-- Listing ID -->
         <div class="col-md-12" id="listing_id_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="listing_id" class="form-group" id="listing_id" placeholder="Listing id">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromListingId"> Back </button>
         </div>
         <!-- Listing ID -->
         <!-- City -->
         <div class="col-md-12" id="city_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="city" class="form-group" id="city" placeholder="City">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromCity"> Back </button>
         </div>
         <!-- City -->
         <!-- Postal Code -->
         <div class="col-md-12" id="postal_code_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="postal_code" class="form-group" id="postal_code" placeholder="Postal Code">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromPostalCode"> Back </button>
         </div>
         <!-- Postal Code -->
         <!-- Address -->
         <div class="col-md-12" id="address_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="2">
                 <input type="text" name="address" class="form-group" id="address" placeholder="Address">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromAddress"> Back </button>
         </div>
@@ -216,33 +216,33 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
     <div class="row" id="realtor_search_row_values" style="display:none">
         <!-- First name -->
         <div class="col-md-12" id="first_name_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="first_name" class="form-group" id="first_name" placeholder="First Name">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromFirstName"> Back </button>
         </div>
         <!-- First name -->
         <!-- Last name -->
         <div class="col-md-12" id="last_name_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="last_name" class="form-group" id="last_name" placeholder="Last Name">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromLastName"> Back </button>
         </div>
         <!-- Last name -->
         <!-- Office Name -->
         <div class="col-md-12" id="office_name_row">
-            <form action="processindex.php" method="get">
+            <form>
                 <input type="hidden" name="psid" class="psid">
                 <input type="hidden" name="type" value="3">
                 <input type="text" name="office_name" class="form-group" id="office_name" placeholder="Office Name">
-                <input type="submit" value="Submit" class="submit">
+                <input type="button" value="Submit" class="submit">
             </form>
             <button class="btn btn-sm btn-info" id="backFromOfficeName"> Back </button>
         </div>
@@ -254,6 +254,7 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
 
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.validate.js"></script>
 <script>
     var psID = '';
     window.extAsyncInit = function() {
@@ -278,9 +279,23 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
                 console.log(error);
             }
         );
-
     };
 
+
+    $('.submit').click(function (event) {
+        event.preventDefault();
+        var form = $(this).closest('form');
+        if(form.valid()) {
+            /* Send the data using post */
+            var posting = $.post('processindex.php', form.serialize());
+            console.log(form.serialize());
+            posting.done(function(data) {
+              if(data) {
+                  MessengerExtensions.requestCloseBrowser();
+              }
+            });
+        }
+    })
     $(document).ready(function () {
         $('#selectActionOne').prop('checked',false);
         $('#selectActionTwo').prop('checked',false);
@@ -292,17 +307,23 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         $('#search_row').hide();
         switch(choice) {
             case '0':   $('#listing_search_row').show();
+                        $('#zillowActionOne').attr('required',false);
+                        $('#zillowActionTwo').attr('required',false);
                         $('#zillow_search').hide();
                         $('#listing_search_row_values').hide();
                         $('#realtor_search_row').hide();
                         break;
             case '1':   $('#zillow_search').show();
+                        $('#zillowActionOne').attr('required',true);
+                        $('#zillowActionTwo').attr('required',true);
                         $('#listing_search_row_values').hide();
                         $('#listing_search_row').hide();
                         $('#realtor_search_row').hide();
                         $('.psid').val(psID);
                         break;
             case '2':   $('#zillow_search').hide();
+                        $('#zillowActionOne').attr('required',false);
+                        $('#zillowActionTwo').attr('required',false);
                         $('#listing_search_row_values').hide();
                         $('#listing_search_row').hide();
                         $('#realtor_search_row').show();
