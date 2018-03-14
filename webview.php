@@ -2,7 +2,7 @@
 	// echo "<pre>";
 	// print_r($_SERVER);
 	// exit();
-	$displayUrl = "https://webviews.tier5-development.us/team_core/webview.html";
+	$displayUrl = "https://webviews.tier5-development.us/team_core/show_webview.php";
 	echo "messages:[
       {
         attachment: {
