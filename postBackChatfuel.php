@@ -1,7 +1,7 @@
 <?php
 $f_name 		= $_POST['f_name'];
 $l_name 		= $_POST['l_name'];
-$phone_numer 	= urlencode($_POST['phone_number']);
+$phone_numer 	= $_POST['phone_number'];
 $date 			= urlencode($_POST['date']);
 $time 			= urlencode($_POST['time']);
 $note 			= urlencode($_POST['note']);
