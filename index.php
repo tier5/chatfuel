@@ -288,11 +288,9 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
         if(form.valid()) {
             /* Send the data using post */
             var posting = $.post('processindex.php', form.serialize());
-            console.log(form.serialize());
+//            console.log(form.serialize());
             posting.done(function(data) {
-              if(data) {
                   MessengerExtensions.requestCloseBrowser();
-              }
             });
         }
     })

@@ -100,7 +100,6 @@ function processSearch() {
                 'chatfuel_block_id' => '5a9fd9cee4b06f595de23f67',
             ];
             $response = getResponse($request,$broadcast_url);
-            return $response;
         }
     } else {
             $request = [
@@ -108,9 +107,7 @@ function processSearch() {
                 'chatfuel_block_id' => '5a9fd9cee4b06f595de23f67',
             ];
             $response = getResponse($request,$broadcast_url);
-        return $response;
     }
-    return 0;
 }
 
 function getResponse($request,$broadcast_url) {
