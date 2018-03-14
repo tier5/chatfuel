@@ -94,6 +94,7 @@ function processSearch() {
                     }
                     break;
         }
+        $response = (isset($response)) ? json_decode($response) : json_decode(['success' => false]);
         if(isset($response) && !$response->success) {
             $request = [
                 'chatfuel_token' => TOKEN,
