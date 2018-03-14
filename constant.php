@@ -1,0 +1,6 @@
+<?php
+
+define("BOT_ID", "5a8aa514e4b05207d55947d6");
+define("USER_ID", '1998661866829501');
+define("CHATFUEL_TOKEN", "qwYLsCSz8hk4ytd6CPKP4C0oalstMnGdpDjF8YFHPHCieKNc0AfrnjVs91fGuH74");
+define("CHATFUEL_BLOCK_NAME", "RESPONSE WEBVIEW");
