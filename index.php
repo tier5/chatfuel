@@ -289,18 +289,15 @@ VALUES ('$name', '$email', '$password1','$gender','$address','$phone')";
             /* Send the data using post */
             var posting = $.post('processindex.php', form.serialize());
 //            console.log(form.serialize());
-            /*posting.done(function(data) {
-                  if(data) {
-
-                  }
-            });*/
-            MessengerExtensions.requestCloseBrowser(function success() {
-                // webview closed
-            }, function error(err) {
-                console.log(err);
-                // an error occurred
+            posting.done(function(data) {
+               console.log(data);
             });
         }
+        MessengerExtensions.requestCloseBrowser(function success() {
+            // webview closed
+        }, function error(err) {
+            console.log(err);
+        });
     })
     $(document).ready(function () {
         $('#selectActionOne').prop('checked',false);

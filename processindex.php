@@ -94,8 +94,16 @@ function processSearch() {
                     }
                     break;
         }
-        $response = (isset($response)) ? json_decode($response) : json_decode(['success' => false]);
+        if(isset($response)){
+            $response = json_decode($response);
+        }
         if(isset($response) && !$response->success) {
+            $request = [
+                'chatfuel_token' => TOKEN,
+                'chatfuel_block_id' => '5a9fd9cee4b06f595de23f67',
+            ];
+            $response = getResponse($request,$broadcast_url);
+        } else if(!isset($response)) {
             $request = [
                 'chatfuel_token' => TOKEN,
                 'chatfuel_block_id' => '5a9fd9cee4b06f595de23f67',
