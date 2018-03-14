@@ -8,7 +8,7 @@ const TOKEN = 'qwYLsCSz8hk4ytd6CPKP4C0oalstMnGdpDjF8YFHPHCieKNc0AfrnjVs91fGuH74'
 
 $psid = $_GET['psid'];
 
-$BROADCAST_API_URL = 'https://api.chatfuel.com/bots/'.BOT_ID.'/users/'.$psid.'/send?chatfuel_token='.TOKEN.'&chatfuel_block_name=';
+$BROADCAST_API_URL = 'https://api.chatfuel.com/bots/'.BOT_ID.'/users/'.$psid.'/send';
 
 try{
     processSearch();
@@ -23,13 +23,19 @@ function processSearch() {
             case '1': if(isset($_GET['address'])&& isset($_GET['zip'])) {
                         $address = $_GET['address'];
                         $zip = $_GET['zip'];
+                        $request = [
+                            'chatfuel_token' => TOKEN,
+                            'chatfuel_block_id' => '5aa3c253e4b094306e80db8d',
+                            'zillow-address' => $address,
+                            'zillow-zip' => $zip
+                        ];
                         $broadcast_url = $GLOBALS['BROADCAST_API_URL'].'5aa3c253e4b094306e80db8d&zillow-address='.$address.'&zillow-zip='.$zip;
                         $curl = curl_init();
                         // Set some options - we are passing in a useragent too here
                         curl_setopt_array($curl, array(
                             CURLOPT_RETURNTRANSFER => 1,
-                            CURLOPT_URL => $broadcast_url,
-                            CURLOPT_USERAGENT => 'Requesting search....'
+                            CURLOPT_URL => $GLOBALS['BROADCAST_API_URL'],
+                            CURLOPT_POSTFIELDS => $request
                         ));
                         // Send the request & save response to $resp
                         $resp=curl_exec($curl);
