@@ -16,36 +16,9 @@
 
 
 
-<?php
-$fname = $lname = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
- if (empty($_POST["fname"])) {
-    $fname = "";
-  } else {
-    $fname = $_POST["fname"];
-  }
-
-  if (empty($_POST["lname"])) {
-    $lname = "";
-  } else {
-    $lname = $_POST["lname"];
-  }
-
-/*function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-
-  return $data;
-}
-*/
-}
-?>
 
 
-<form method="post" id="enter_name_form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<form id="enter_name_form">
 First name:<input type="text" name="fname">
 <br><br>
 Last name: <input type="text" name="lname">
