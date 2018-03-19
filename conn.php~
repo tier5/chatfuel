@@ -1,0 +1,44 @@
+<?php
+$server='localhost';
+$dbname='chatfuel';
+$userdb='root';
+$passdb='toor';
+
+$con= mysqli_connect($server,$userdb,$passdb,$dbname);
+
+$mes_id= $_POST["messenger_id"];
+$fname=$_POST['first_name'];
+$lname=$_POST['last_name'];
+$dev=$_POST['device'];
+$cont=$_POST['content'];
+$topic=$_POST['topic'];
+$inf=$_POST['influencer'];
+/*$remarks=$_POST['remarks'];
+$comm=$_POST['comments'];*/
+if(!$con)
+{
+	die("connection failed".mysqli_connect_error());
+}
+
+if($_POST('shortquiz'))
+{
+	$sql = "INSERT INTO short ('messenger_id','first_name','last_name','device','content','topic') VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic')";
+
+if (mysqli_query($con, $sql)) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . mysqli_error($con);
+}
+}
+
+if($_POST('longquiz'))
+{
+	$sql = "INSERT INTO long ('messenger_id','first_name','last_name','device','content','topic','influencer') VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic','$inf')";
+
+if (mysqli_query($con, $sql)) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . mysqli_error($con);
+}
+}
+?>
