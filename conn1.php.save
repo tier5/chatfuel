@@ -1,0 +1,47 @@
+<?php 
+include 'conn.php';
+session_start();
+
+if($_POST) {
+    $mes_id = $_POST['messenger_user_id'];
+    $assess = $_POST['assessment'];
+    $fname = $_POST['first_name'];
+    $lname = $_POST['last_name'];
+    $dev = $_POST['device'];
+    $cont = $_POST['content_type'];
+    $topic = $_POST['topic_interest'];
+    $inf = $_POST['influencer'];
+}
+ 
+switch($assess) {
+    case 'Short assessment' :
+        $sql = "INSERT INTO 'Short assessment' (messenger_id','first_name','last_name','device','content','topic') VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic')";
+	$user_detail = new stdClass();
+	$user_detail->type="text";
+	$user_detail="EmpName=".$sql;
+	$list_view= new stdClass();
+	$list_view->messages[] = ['text' => $user_detail];
+
+	echo json_encode($list_view);
+
+       /* if (mysqli_query($con, $sql)) {
+            echo "Record updated successfully";
+
+        } else {
+            echo "Error updating record: " . mysqli_error($con);
+        }*/
+    break;
+
+    case 'Long assessment' :
+        $sql = "INSERT INTO long ('messenger_id','first_name','last_name','device','content','topic','influencer') VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic','$inf')";
+
+        if (mysqli_query($con, $sql)) {
+            echo "Record updated successfully";
+
+        } else {
+            echo "Error updating record: " . mysqli_error($con);
+        }
+    break;
+}
+
+?>
