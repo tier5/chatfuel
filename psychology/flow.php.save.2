@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+</head>
+<body>
+
+<?php
+/*
+include '/../conn1.php';
+session_start();
+$mes_id=$_SESSION["mes_id"];
+*/
+?>
+
+
+<script>
+      // Code copied from Facebook to load and initialise Messenger extensions
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'Messenger'));
+    </script>
+
+<iframe width="350" height="315"
+src="https://www.youtube.com/embed/fXIeFJCqsPs">
+</iframe>
+<br><br>
+
+
+
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+
+<script>
+window.extAsyncInit = function () {
+    // the Messenger Extensions JS SDK is done loading
+    MessengerExtensions.requestCloseBrowser(function() {
+        $.post("https://hd.tier5-development.us/Tuhina_projects/psychology/curl_webview.php", {m_id: "2092869527397577"},function(data) {
+		console.log(data);
+	});
+    }, function (err) {
+        alert("Messenger Extension Error: " + err);
+    });
+};
+</script>
+</body>
+</html>
+

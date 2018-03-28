@@ -60,7 +60,7 @@ src="https://www.youtube.com/embed/?v=iEgu6p_frmE&list=PLiZj-Ik9MmM1OEw1_TMDkg3Z
 <br><br>
 <form method="post">
 Remarks:<br><br>
- <input type="image" src="Likes.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
+ <input type="image" src="Like.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
  <br>
 <input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.html" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
 <br><br>

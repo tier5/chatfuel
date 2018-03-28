@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>  
+<html>
+<head>
+</head>
+<body>  
+
+<?php
+include '/../conn.php';
+session_start()
+$remarks = $_POST["remarks"];
+
+$sql = "INSERT INTO `user_assessment` (`remarks`) VALUES ('$remarks')";
+
+if($con->query($sql)===TRUE)
+{
+   echo "New Record Created succussfully";
+}*/
+
+?>
+
+
+<script>
+      // Code copied from Facebook to load and initialise Messenger extensions
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'Messenger'));
+    </script>
+
+<iframe width="350" height="315"
+src="https://www.youtube.com/embed/fXIeFJCqsPs">
+</iframe>
+<br><br>
+<form method="post">
+Remarks:<br><br>
+ <input type="image" src="Like.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
+ <br>
+<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.php" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
+<br><br>
+<br><br>
+</form>
+
+
+</body>
+</html>
+

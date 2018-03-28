@@ -60,9 +60,9 @@ src="https://www.facebook.com/groups/385240885169090/">
 <br><br>
 <form method="post">
 Remarks:<br><br>
- <input type="image" src="Likes.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
+ <input type="image" src="Like.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
  <br>
-<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.html" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
+<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.php" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
 <br><br>
 <br><br>
 </form>

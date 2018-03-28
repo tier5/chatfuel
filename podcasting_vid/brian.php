@@ -55,14 +55,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>
 
 <iframe width="350" height="315"
-src="https://www.youtube.com/embed/PL9F0Fb36EYxtbWg9Q8PH8xjvTPmSJTEKs">
+src="https://www.youtube.com/embed/?listType=1rELC-AU8ig&list=PL9F0Fb36EYxtbWg9Q8PH8xjvTPmSJTEKs">
 </iframe>
 <br><br>
 <form method="post">
 Remarks:<br><br>
- <input type="image" src="Likes.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
+ <input type="image" src="Like.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
  <br>
-<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.html" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
+<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.php" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
 <br><br>
 <br><br>
 </form>

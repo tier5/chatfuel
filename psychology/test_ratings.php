@@ -8,30 +8,23 @@
 
 <?php
 
-//$server='localhost';
-/*$dbname='chatfuel';
-$userdb='root';
-$passdb='toor';
-$tname='webview';
+/*include '/../conn1.php';
+session_start();
 
 $remarks = $_POST["remarks"];
-$comment =$_POST["comment"];
-
-//session_start();
-//$conn= new mysqli($servername,$userdb,$passdb,$dbname);
-
-/*if($conn->connect_error){
-	die("Connection failed : ".$conn->connect_error);
-	}
-$sql = ("INSERT INTO ".$tname." (remarks,comment) VALUES ('".$remarks."','".$comment."')");
-
-if($conn->query($sql)===TRUE)
+$last_id = $_POST["short_id"];
+/*if($con->query($sql)===TRUE)
 {
    // echo "New Record Created succussfully";
+  $last_id=$con->insert_id;
 }
-else
+
+$sqli = "UPDATE `user_assessment` SET `remarks`='$remarks' WHERE `short_id`='$last_id'";
+
+if($con->query($sqli)===TRUE)
 {
-    echo "Error : ".$sql."<br>".$conn->error;
+   // echo "New Record Created succussfully";
+
 }
 */
 

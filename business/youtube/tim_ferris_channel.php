@@ -6,39 +6,7 @@
 
 <?php
 
-//$server='localhost';
-/*$dbname='chatfuel';
-$userdb='root';
-$passdb='toor';
-$tname='webview';
-
-$remarks = $_POST["remarks"];
-$comment =$_POST["comment"];
-
-//session_start();
-//$conn= new mysqli($servername,$userdb,$passdb,$dbname);
-
-/*if($conn->connect_error){
-	die("Connection failed : ".$conn->connect_error);
-	}
-$sql = ("INSERT INTO ".$tname." (remarks,comment) VALUES ('".$remarks."','".$comment."')");
-
-if($conn->query($sql)===TRUE)
-{
-   // echo "New Record Created succussfully";
-}
-else
-{
-    echo "Error : ".$sql."<br>".$conn->error;
-}
-*/
-
-$remarks = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $remarks = ($_POST["remarks"]);
-  //$comment = ($_POST["comment"]);
-}
+$m_id_php = $_GET['id'];
 
 ?>
 
@@ -57,15 +25,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <iframe width="350" height="315"
 src="https://www.youtube.com/embed/?listType=user_uploads&list=masterlock77"></iframe>
 <br><br>
-<form method="post">
-Remarks:<br><br>
- <input type="image" src="Likes.jpg" name="remarks" height="100" width="250" formaction="test_ratings.php" <?php if (isset($remarks) && $remarks=="like") echo "checked";?> value="like">
- <br>
-<input type="image" src="facebook-dislike-button.jpg" name="remarks" height="100" width="250" formaction="sorry.html" <?php if (isset($remarks) && $remarks=="dislike") echo "checked";?> value="dislike">
-<br><br>
-<br><br>
-</form>
 
+<button type="close" name="close" value="close" onclick="self.close()">Close</button>
+
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"
+        integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+        crossorigin="anonymous"></script>
+
+<script>
+    $(function(){
+        var m_id = "<?php echo $m_id_php?>";
+        $('button').click(function(e){
+            // e.preventDefault();
+
+            $.post("/Tuhina_projects/business/youtube/curl_webview.php", {m_id: m_id}
+                ,function(){
+                    MessengerExtensions.requestCloseBrowser(function () {
+                        console.log('Window will be closed');
+                    }, function (error) {
+                        console.log('There is an error');
+                        console.log(error);
+                    });
+                });
+        });
+    });
+</script>
 
 </body>
 </html>
