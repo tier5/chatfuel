@@ -37,7 +37,7 @@ if($_POST) {
 
 	$user_detail = new stdClass();
 	$user_detail ->type="text";
-	$user_detail=$_SESSION['mes_id'];
+	$user_detail="Records saved";
 	$list_view= new stdClass();
 	$list_view->messages[] = ['text' => $user_detail];
 
