@@ -2,7 +2,6 @@
 
 session_start();
 include 'conn.php';
-//include 'sample_feedback.php';
 /*ini_set('display_errors', 1);
 error_reporting(E_ALL);*/
 
@@ -19,16 +18,28 @@ if($_POST) {
 $last_id=$con->insert_id;
 
 $sql1 = "INSERT INTO `level_1_videos` (`messenger_id`,`feedback1`,`feedback2`,`influencer`) VALUES ('$mes_id','$feedback1','$feedback2','$inf')";
+if ($feedback2==NULL){
+	sql2 = "UPDATE `level_1_videos` SET `feedback2`='NULL' where `short_id`='$last_id";
+}
+
 
 if (mysqli_query($con, $sql1)) {
-	//$_SESSION["id"]=$last_id;
+         $_SESSION["id"]=$last_id;
 
         $user_detail = new stdClass();
         $user_detail ->type="text";
         $user_detail="Feedback saved successfully";
         $list_view= new stdClass();
         $list_view->messages[] = ['text' => $user_detail];
-  
+
+  } elseif (mysqli_query($con, $sql2)) {
+	$_SESSION["id"]=$last_id;
+        $user_detail = new stdClass();
+        $user_detail ->type="text";
+        $user_detail="Feedback saved successfully";
+        $list_view= new stdClass();
+        $list_view->messages[] = ['text' => $user_detail]; 
+
   } else {
 	 $user_detail = new stdClass();
          $user_detail ->type="text";
@@ -39,8 +50,6 @@ if (mysqli_query($con, $sql1)) {
   }
 
   echo json_encode($list_view);
-
-//  feedback_count($con,$mes_id,$inf);
 
 ?>
 

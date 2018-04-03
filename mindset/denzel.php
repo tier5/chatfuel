@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>  
 <html>
 <head>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>  
 
@@ -22,35 +23,13 @@ $m_id_php = $_GET['id'];
       }(document, 'script', 'Messenger'));
     </script>
 
+<div class="aspect-ratio">
 <iframe width="350" height="315"
 src="https://www.youtube.com/embed/tlY0PkWxCW8">
 </iframe>
-<br><br>
+</div>
 
-<button type="close" name="close" value="close" onclick="self.close()"">Close</button>          
-                                                                                              
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"                                     
-        integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="                       
-        crossorigin="anonymous"></script>                                                     
-                                                                                              
-<script>                                                                                      
-$(function(){                                                                                 
-            var m_id = "<?php echo $m_id_php?>";                                              
-            $('button').click(function(e){                                                    
-               // e.preventDefault();                                                         
-                                                                                              
-                 $.post("/Tuhina_projects/mindset/curl_webview.php", {m_id: m_id}          
-                                  ,function(){                                                
-                                        MessengerExtensions.requestCloseBrowser(function () { 
-                                      console.log('Window will be closed');                   
-                                    }, function (error) {                                     
-                                      console.log('There is an error');                       
-                                      console.log(error);                                     
-                               });                                                            
-                           });                                                                
-                  });                                                                         
-        });                                                                                   
-</script>                                                                                     
+        
 
 </body>
 </html>
