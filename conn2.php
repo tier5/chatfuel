@@ -11,14 +11,14 @@ if($_POST) {
     $feedback1 = $_POST['fdb1'];
     $feedback2 = $_POST['fdb2'];
         $inf = $_POST['inf'];
-
+	$vid = $_POST['video'];
         $last_id="";
-
+	$level = $_POST['level'];
 }
 
 $last_id=$con->insert_id;
 
-$sql1 = "INSERT INTO `level_1_videos` (`messenger_id`,`feedback1`,`feedback2`,`influencer`) VALUES ('$mes_id','$feedback1','$feedback2','$inf')";
+$sql1 = "INSERT INTO `feedback` (`messenger_id`,`feedback1`,`feedback2`,`influencer`,`video`,`level`) VALUES ('$mes_id','$feedback1','$feedback2','$inf','$vid','$level')";
 
 if (mysqli_query($con, $sql1)) {
 	//$_SESSION["id"]=$last_id;

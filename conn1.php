@@ -7,16 +7,14 @@ error_reporting(E_ALL);*/
 if($_POST) {
     $mes_id = $_POST['messenger_user_id'];
     $_SESSION["mes_id"]=$mes_id;
- //   $assess = $_POST['assessment'];
     $fname = $_POST['first_name'];
     $lname = $_POST['last_name'];
     $dev = $_POST['device'];
-   $cont = $_POST['content'];
+    $cont = $_POST['content'];
     $topic = $_POST['topic'];
-   // $inf = "";
-   // if( $_POST['influencer'] ) {
-        $inf = $_POST['inf'];
-   // }
+    $inf = $_POST['inf'];
+    $vid = $_POST['video'];
+    $level = $_POST['level'];
 	$last_id="";
 
 }
@@ -29,7 +27,7 @@ if($_POST) {
  
  echo json_encode($list_view);
 */
- $sql = "INSERT INTO `user_assessment` (`messenger_user_id`,`first_name`,`last_name`,`device`,`content`,`topic`,`influencer`) VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic','$inf')";
+ $sql = "INSERT INTO `user_assessment` (`messenger_user_id`,`first_name`,`last_name`,`device`,`content`,`topic`,`influencer`,`video`,`level`) VALUES ('$mes_id','$fname','$lname','$dev','$cont','$topic','$inf','$vid','$level')";
 
   if (mysqli_query($con, $sql)) {
 	$last_id=$con->insert_id;
