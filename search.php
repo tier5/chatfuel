@@ -175,22 +175,23 @@ function processOutput($resp = null) {
 						$variables_obj->demo  =404;
 						$list_view->set_attributes = $variables_obj;
 					}
+			
 					print_r(json_encode($list_view));
 				} else {
 					//its for the odd number of result return from the galver search API
-					if( $paginate_start < $resp_count && $paginate_end > $resp_count ){
-						$i = $resp_count - 1;
+					if($resp_count < $paginate_end && $resp_count > $paginate_start ){
+						$j = $resp_count - 1;
 						$btn_obj	= new stdClass();
 						$btn_obj->type ="phone_number";
-						$btn_obj->phone_number = $resp_arr[$i]->office_phone_number;
+						$btn_obj->phone_number = $resp_arr[$j]->office_phone_number;
 						$btn_obj->title = "Call";
 						$elements_btn_array[0] = $btn_obj;
 						//array_push($elements_btn_array[0], $btn_obj);
 						// creating element object
 						$elem_objects = new stdClass();
-						$elem_objects->title = $resp_arr[$i]->full_name;
+						$elem_objects->title = $resp_arr[$j]->full_name;
 						$elem_objects->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
-						$elem_objects->subtitle = $resp_arr[$i]->office_name;
+						$elem_objects->subtitle = $resp_arr[$j]->office_name;
 						$elem_objects->buttons = $elements_btn_array;
 						array_push($elements, $elem_objects);
 						// payload
@@ -204,6 +205,53 @@ function processOutput($resp = null) {
 						$attachment->payload = $payload;
 						$list_view  = new stdClass();
 						$list_view->messages[] = ['attachment' => $attachment];
+						
+						$btn_obj                    = new stdClass();
+						$btn_obj->type              = "show_block";
+						$btn_obj->block_names       = ["Find a REALTOR®"];
+						$btn_obj->title             = "Search Again";
+						$elements_btn_array[0]      = $btn_obj;
+						/*$btn_obj        = new stdClass();
+                                                $btn_obj->type ="phone_number";
+                                                $btn_obj->phone_number ="702-4753200";
+                                                $btn_obj->title = "Call";
+                                                $elements_btn_array[0] = $btn_obj;*/
+
+						//array_push($elements_btn_array[0], $btn_obj);
+						// creating element object
+						$elem_objects               = new stdClass();
+						$elem_objects->title        = "No more result !";
+						$elem_objects->image_url    = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
+						$elem_objects->subtitle     = "For more.";
+						$elem_objects->buttons      = $elements_btn_array;
+						array_push($elements, $elem_objects);
+						// payload
+						$payload                    = new stdClass();
+						$payload->template_type     = "list";
+						$payload->top_element_style = "large";
+						$payload->elements          = $elements;
+						// configure chart
+						$attachment                 = new stdClass();
+						$attachment->type           = "template";
+						$attachment->payload        = $payload;
+						$list_view                  = new stdClass();
+						$list_view->messages[]      = ['attachment' => $attachment];
+						
+						$variables_obj = new stdClass();
+						$variables_obj->demo  =404;
+						$list_view->set_attributes = $variables_obj;
+						
+						print_r(json_encode($list_view));
+
+						/*$msg = array('text' =>  "I am in odd listing");
+                                                $parent = array();
+                                                array_push($parent,$msg);
+                                                $obj  = new stdClass();
+                                                $obj->messages = $parent;
+                                                $variables_obj = new stdClass();
+                                                $variables_obj->demo  =404;
+                                                $obj->set_attributes = $variables_obj;
+                                                print_r(json_encode($obj));*/
 					}else{
 						$msg = array('text' =>  "No More Results!");
 						$parent = array();
