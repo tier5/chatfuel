@@ -27,6 +27,8 @@ const BASE_GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json?"
  */
 const BASE_GOOGLE_AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
 
+const GOOGLE_NEARBY_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+
 const GOOGLE_PLACE_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
 
 const GOOGLE_PLACE_PHOTOS_URL = "https://maps.googleapis.com/maps/api/place/photo?";
@@ -64,13 +66,8 @@ function processURL() {
         'citystatezip' => $zip
     ];
 
-    $google_request = [
-        'input' => $address,
-        'key' => GOOGLE_MAP_API_KEY
-    ];
-
     //Pass the request
-    request($request,$google_request);
+    request($request);
 }
 
 /**
@@ -79,25 +76,10 @@ function processURL() {
  * @return array
  * @throws exception if no url has been passed
  */
-function request($request = null,$google_request = null) {
+function request($request = null) {
     $image = null;
     if(is_null($request )){
         throw new Exception("No URL has been passed to make a request", 1);
-    }
-
-    if(!is_null($google_request)) {
-        $google_request = http_build_query($google_request);
-        $curl = curl_init();
-        // Set some options - we are passing in a useragent too here
-        curl_setopt_array($curl, array(
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_URL => BASE_GOOGLE_AUTOCOMPLETE_URL.$google_request,
-        ));
-        // Send the request & save response to $resp
-        $resp = curl_exec($curl);
-        $image = getPlaceDetails($resp);
-        // Close request to clear up some resources
-        curl_close($curl);
     }
 
     if (isset($request ) && count($request) > 0) {
@@ -110,7 +92,7 @@ function request($request = null,$google_request = null) {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        parseAPI($resp,$image);
+        parseAPI($resp);
         // Close request to clear up some resources
         curl_close($curl);
     } else {
@@ -123,7 +105,7 @@ function request($request = null,$google_request = null) {
  * @param null $response
  * @throws Exception
  */
-function parseAPI($response = null,$image = null) {
+function parseAPI($response = null) {
     if(is_null($response)){
         throw new Exception('No response found.',1);
     }
@@ -131,7 +113,7 @@ function parseAPI($response = null,$image = null) {
     //get the xml response
     if(isset($response)) {
         $xml = simplexml_load_string($response);
-        createChatFuelResponse($xml,$image);
+        createChatFuelResponse($xml);
     }
 }
 
@@ -142,7 +124,26 @@ function parseAPI($response = null,$image = null) {
 function createChatFuelResponse($xmlResponse,$image = null) {
     $fetchResponseCode = $xmlResponse->message->code;
     switch ($fetchResponseCode) {
-        case '0':   createResponse($xmlResponse->response->results->result,$image);
+        case '0':   $address = $xmlResponse->response->results->result->address->street;
+                    $google_request = [
+                        'input' => trim($address),
+                        'key' => GOOGLE_MAP_API_KEY
+                    ];
+                    if(!is_null($google_request)) {
+                        $google_request = http_build_query($google_request);
+                        $curl = curl_init();
+                        // Set some options - we are passing in a useragent too here
+                        curl_setopt_array($curl, array(
+                            CURLOPT_RETURNTRANSFER => 1,
+                            CURLOPT_URL => BASE_GOOGLE_AUTOCOMPLETE_URL.$google_request,
+                        ));
+                        // Send the request & save response to $resp
+                        $resp = curl_exec($curl);
+                        $image = getPlaceDetails($resp);
+                        // Close request to clear up some resources
+                        curl_close($curl);
+                    }
+                    createResponse($xmlResponse->response->results->result,$image);
                     break;
         default:    showErrors($fetchResponseCode);
                     break;
@@ -261,7 +262,7 @@ function showErrors($responseCodes) {
 }
 
 /**
- *
+ * The autocomplete details
  */
 function getPlaceDetails($resp = null)  {
     if(!is_null($resp)) {
@@ -282,9 +283,47 @@ function getPlaceDetails($resp = null)  {
             ));
             // Send the request & save response to $resp
             $resp = curl_exec($curl);
+            $image = getPlace($resp);
+            // Close request to clear up some resources
+            curl_close($curl);
+            return $image;
+        }
+        return null;
+    }
+    return null;
+}
+
+/**
+ * Get place from autocomplete
+ * @param $resp
+ * @return mixed|null|string
+ */
+
+function getPlace($resp) {
+    if(!is_null($resp)) {
+        $resp = json_decode($resp);
+        $latitude = !is_null($resp->result) && !is_null($resp->result->geometry) && !is_null($resp->result->geometry->location) && !is_null($resp->result->geometry->location->lat) ? $resp->result->geometry->location->lat : '';
+        $longitude = !is_null($resp->result) && !is_null($resp->result->geometry) && !is_null($resp->result->geometry->location) && !is_null($resp->result->geometry->location->lng) ? $resp->result->geometry->location->lng : '';
+        if(!empty($latitude) && !empty($longitude)) {
+            $request = http_build_query([
+                'location' => $latitude.','.$longitude,
+                'radius' => '50',
+                'key' => GOOGLE_MAP_API_KEY
+            ]);
+            $curl = curl_init();
+            // Set some options - we are passing in a useragent too here
+            curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => urldecode(GOOGLE_NEARBY_SEARCH_URL.$request),
+               // CURLOPT_FILE => UPLOADS_DIR
+               // CURLOPT_POSTFIELDS => $request
+            ));
+            // Send the request & save response to $resp
+            $resp = curl_exec($curl);
             $image = getImage($resp);
             // Close request to clear up some resources
             curl_close($curl);
+
             return $image;
         }
         return null;
@@ -295,7 +334,7 @@ function getPlaceDetails($resp = null)  {
 function getImage($resp) {
     if(!is_null($resp)) {
         $resp = json_decode($resp);
-        $photos = count($resp->result) > 0 ? $resp->result->photos[0] : [];
+        $photos = count($resp->results) > 0  ? (isset($resp->results[0]->photos) ? $resp->results[0]->photos[0] : (isset($resp->results[count($resp->results) - 1]->photos) ? $resp->results[count($resp->results) - 1]->photos[0] : [])) : [];
         $height  = isset($photos->height) ? $photos->height : 1000;
         $width = isset($photos->width) ? $photos->width : 1000;
         $photo_reference = isset($photos->photo_reference) ? $photos->photo_reference : '';
@@ -307,6 +346,7 @@ function getImage($resp) {
                 'key' => GOOGLE_MAP_API_KEY
             ]);
             $resp = convertImageUrl($request);
+
             /*    $curl = curl_init();
             // Set some options - we are passing in a useragent too here
             curl_setopt_array($curl, array(
