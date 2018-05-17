@@ -251,6 +251,12 @@ function showErrors($responseCodes) {
         case '507': $errorMsg = 'No exact match found.';
                     catchErrors($errorMsg);
                     break;
+        case '508': $errorMsg = 'No exact match found.';
+                    catchErrors($errorMsg);
+                    break;
+        default:    $errorMsg = 'Oops something went wrong.Please try again after sometime.';
+                    catchErrors($errorMsg);
+                    break;
     }
 }
 
