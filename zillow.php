@@ -22,6 +22,14 @@ const GOOGLE_MAP_API_KEY = 'AIzaSyBV60oJTBzbA7RLxNjlkUjNk2ElVYEPN9w';
  * @const BASE_GOOGLE_API_URL
  */
 const BASE_GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json?";
+/**
+ *
+ */
+const BASE_GOOGLE_AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
+
+const GOOGLE_PLACE_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
+
+const GOOGLE_PLACE_PHOTOS_URL = "https://maps.googleapis.com/maps/api/place/photo?";
 
 try {
     processURL();
@@ -56,8 +64,13 @@ function processURL() {
         'citystatezip' => $zip
     ];
 
+    $google_request = [
+        'input' => $address,
+        'key' => GOOGLE_MAP_API_KEY
+    ];
+
     //Pass the request
-    request($request);
+    request($request,$google_request);
 }
 
 /**
@@ -66,10 +79,27 @@ function processURL() {
  * @return array
  * @throws exception if no url has been passed
  */
-function request($request = null) {
+function request($request = null,$google_request = null) {
+    $image = null;
     if(is_null($request )){
         throw new Exception("No URL has been passed to make a request", 1);
     }
+
+    if(!is_null($google_request)) {
+        $google_request = http_build_query($google_request);
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => BASE_GOOGLE_AUTOCOMPLETE_URL.$google_request,
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        $image = getPlaceDetails($resp);
+        // Close request to clear up some resources
+        curl_close($curl);
+    }
+
     if (isset($request ) && count($request) > 0) {
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
@@ -80,7 +110,7 @@ function request($request = null) {
         ));
         // Send the request & save response to $resp
         $resp = curl_exec($curl);
-        parseAPI($resp);
+        parseAPI($resp,$image);
         // Close request to clear up some resources
         curl_close($curl);
     } else {
@@ -93,7 +123,7 @@ function request($request = null) {
  * @param null $response
  * @throws Exception
  */
-function parseAPI($response = null) {
+function parseAPI($response = null,$image = null) {
     if(is_null($response)){
         throw new Exception('No response found.',1);
     }
@@ -101,7 +131,7 @@ function parseAPI($response = null) {
     //get the xml response
     if(isset($response)) {
         $xml = simplexml_load_string($response);
-        createChatFuelResponse($xml);
+        createChatFuelResponse($xml,$image);
     }
 }
 
@@ -109,10 +139,10 @@ function parseAPI($response = null) {
  * Function to create the chat fuel json response, if errors are found then show the errors
  * @param $xmlResponse
  */
-function createChatFuelResponse($xmlResponse) {
+function createChatFuelResponse($xmlResponse,$image = null) {
     $fetchResponseCode = $xmlResponse->message->code;
     switch ($fetchResponseCode) {
-        case '0':   createResponse($xmlResponse->response->results->result);
+        case '0':   createResponse($xmlResponse->response->results->result,$image);
                     break;
         default:    showErrors($fetchResponseCode);
                     break;
@@ -123,7 +153,7 @@ function createChatFuelResponse($xmlResponse) {
  * Create the chatfuel json response
  * @param $response
  */
-function createResponse($response) {
+function createResponse($response,$image =null) {
     $buttons = [];
     $elementsArray = [];
 
@@ -143,7 +173,7 @@ function createResponse($response) {
     $elements = new stdClass();
     $elements->title = $response->address->street.",".$response->address->zipcode.",".$response->address->city.",".$response->address->state;
     $elements->subtitle = 'Range: $'.$response->zestimate->valuationRange->low.' - $'.$response->zestimate->valuationRange->high;
-    $elements->image_url = 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
+    $elements->image_url = !is_null($image) ? $image : 'https://s3.amazonaws.com/mlsphotos.idxbroker.com/defaultNoPhoto/noPhotoFull.png';
     $elements->buttons = $buttons;
 
     array_push($elementsArray,$elements);
@@ -224,3 +254,112 @@ function showErrors($responseCodes) {
     }
 }
 
+/**
+ *
+ */
+function getPlaceDetails($resp = null)  {
+    if(!is_null($resp)) {
+        $resp = json_decode($resp);
+        $first_prediction = count($resp->predictions) > 0 ?  $resp->predictions[0] : [];
+        $place_id = !empty($first_prediction) ? $first_prediction->place_id : '';
+        if(!empty($place_id)) {
+            $request = http_build_query([
+                'placeid' => $place_id,
+                'key' => GOOGLE_MAP_API_KEY
+            ]);
+            $curl = curl_init();
+            // Set some options - we are passing in a useragent too here
+            curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => GOOGLE_PLACE_DETAILS_URL . $request,
+                // CURLOPT_POSTFIELDS => $request
+            ));
+            // Send the request & save response to $resp
+            $resp = curl_exec($curl);
+            $image = getImage($resp);
+            // Close request to clear up some resources
+            curl_close($curl);
+            return $image;
+        }
+        return null;
+    }
+    return null;
+}
+
+function getImage($resp) {
+    if(!is_null($resp)) {
+        $resp = json_decode($resp);
+        $photos = count($resp->result) > 0 ? $resp->result->photos[0] : [];
+        $height  = isset($photos->height) ? $photos->height : 1000;
+        $width = isset($photos->width) ? $photos->width : 1000;
+        $photo_reference = isset($photos->photo_reference) ? $photos->photo_reference : '';
+        if(!empty($photo_reference)) {
+            $request = http_build_query([
+                'photoreference' => $photo_reference,
+                'maxwidth' => $width,
+                'maxheight' => $height,
+                'key' => GOOGLE_MAP_API_KEY
+            ]);
+            $resp = convertImageUrl($request);
+            /*    $curl = curl_init();
+            // Set some options - we are passing in a useragent too here
+            curl_setopt_array($curl, array(
+                CURLOPT_RETURNTRANSFER => 1,
+                CURLOPT_URL => GOOGLE_PLACE_PHOTOS_URL,
+                CURLOPT_FILE => UPLOADS_DIR
+               // CURLOPT_POSTFIELDS => $request
+            ));
+            // Send the request & save response to $resp
+            $resp = curl_exec($curl);
+            echo $resp;
+            // Close request to clear up some resources
+            curl_close($curl);*/
+
+            return $resp;
+        }
+        return null;
+    }
+    return null;
+}
+
+/***
+ * Convert images to image urls.
+ * @param $encodedImage
+ * @return string
+ */
+function convertImageUrl($request){
+    $filename = md5(time().uniqid()).".png";
+    if(!file_exists('uploads')) {
+        mkdir('uploads',777);
+        chmod('uploads',777);
+    }
+    $path = UPLOADS_DIR.'/'.$filename;
+    file_put_contents($path,file_get_contents(GOOGLE_PLACE_PHOTOS_URL.$request));
+
+    /*echo GOOGLE_PLACE_PHOTOS_URL.$request;
+    die;*/
+    /*$image = file_get_contents(GOOGLE_PLACE_PHOTOS_URL.$request);
+    $fp  = fopen('uploads/ae.png', 'w+');
+
+    fputs($fp, $image);
+    fclose($fp);
+    unset($image);*/
+
+   /* $filename = md5(time().uniqid()).".png";
+    if(!file_exists('uploads')) {
+        mkdir('uploads',777);
+        chmod('uploads',777);
+    }
+    $path = UPLOADS_DIR.'/'.$filename;
+    $ch = curl_init(GOOGLE_PLACE_PHOTOS_URL.$request);
+    $fp = fopen($path, 'wb');
+    curl_setopt($ch, CURLOPT_FILE, $fp);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);*/
+//    file_put_contents($path,file_get_contents(GOOGLE_PLACE_PHOTOS_URL.$request));
+    $actual_link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]/uploads/".$filename;
+    return $actual_link;
+
+}
