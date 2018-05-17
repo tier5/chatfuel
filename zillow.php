@@ -62,10 +62,11 @@ function processURL() {
     //create the request array
     $request = [
         'zws-id' => ZILLOW_ID,
-        'address' => trim($address),
+        'address' => str_replace(' ', '', $address),
         'citystatezip' => $zip
     ];
-
+print_r($request);
+    die;
     //Pass the request
     request($request);
 }
