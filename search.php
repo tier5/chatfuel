@@ -123,9 +123,7 @@ function processOutput($resp = null) {
             $variables_obj = new stdClass();
             $variables_obj->demo  =404;
             $obj->set_attributes = $variables_obj;
-            header('Content-Type: application/json');
-            echo(json_encode($obj));
-            exit;
+            print_r(json_encode($obj));
         } else { 
             if (count($resp_arr)) {
                 //count total number of objects
@@ -148,9 +146,7 @@ function processOutput($resp = null) {
                         $variables_obj = new stdClass();
                         $variables_obj->demo  =404;
                         $obj->set_attributes = $variables_obj;
-                        header('Content-Type: application/json');
-                        echo json_encode($obj);
-                        exit;
+                        print_r(json_encode($obj));
                     }
                 } elseif (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
                     header('Content-Type: application/json');
@@ -165,9 +161,7 @@ function processOutput($resp = null) {
                     $variables_obj = new stdClass();
                     $variables_obj->demo  =404;
                     $obj->set_attributes = $variables_obj;
-                    header('Content-Type: application/json');
-                    echo json_encode($obj);
-                    exit;
+                    print_r(json_encode($obj));
                 }
             } else {
                 $msg = array('text' =>  "No Search Results!");
@@ -178,9 +172,7 @@ function processOutput($resp = null) {
                 $variables_obj = new stdClass();
                 $variables_obj->demo  =404;
                 $obj->set_attributes = $variables_obj;
-                header('Content-Type: application/json');
-                echo json_encode($obj);
-                exit;
+                print_r(json_encode($obj));
             }
         }
     } else {
@@ -189,9 +181,7 @@ function processOutput($resp = null) {
         array_push($parent,$msg);
         $obj  = new stdClass();
         $obj->messages = $parent;
-        header('Content-Type: application/json');
-        echo json_encode($obj);
-        exit;
+        print_r(json_encode($obj));
     }
 }
 function makeListView($resp_arr, $counter, $paginate_start, $paginate_end, $elements = []) {
