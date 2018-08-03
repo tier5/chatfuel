@@ -142,7 +142,7 @@ function processOutput($resp = null) {
 						// creating element object
 						$elem_objects = new stdClass();
 						$elem_objects->title = $resp_arr[$i]->full_name;
-						$elem_objects->image_url = "http://159.203.81.237/test/GLVAR_transparent-logo.jpg";
+						$elem_objects->image_url = "./dgrealty.jpg";
 						$elem_objects->subtitle = $resp_arr[$i]->office_name;
 						$elem_objects->buttons = $elements_btn_array;
 						array_push($elements, $elem_objects);
