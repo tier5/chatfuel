@@ -15,7 +15,9 @@ try {
 	array_push($parent,$error);
 	$obj  = new stdClass();
 	$obj->messages = $parent;
-	echo json_encode($obj);
+	header('Content-Type: application/json');
+  echo json_encode($obj);
+  exit;
 }
 /**
  * This function searches for the realtors
@@ -126,7 +128,9 @@ function processOutput($resp = null) {
 			$variables_obj = new stdClass();
 			$variables_obj->demo  =404;
 			$obj->set_attributes = $variables_obj;
-			print_r(json_encode($obj));
+			header('Content-Type: application/json');
+      echo(json_encode($obj));
+      exit;
 		} else { 
 			if (count($resp_arr)) {
 				//count total number of objects
@@ -173,7 +177,9 @@ function processOutput($resp = null) {
 						$variables_obj->demo  =404;
 						$list_view->set_attributes = $variables_obj;
 					}
-					print_r(json_encode($list_view));
+					header('Content-Type: application/json');
+          echo json_encode($list_view);
+          exit;
 				} else {
 					$msg = array('text' =>  "No More Results!");
 					$parent = array();
@@ -183,7 +189,9 @@ function processOutput($resp = null) {
 					$variables_obj = new stdClass();
 					$variables_obj->demo  =404;
 					$obj->set_attributes = $variables_obj;
-					print_r(json_encode($obj));
+					header('Content-Type: application/json');
+          echo json_encode($obj);
+          exit;
 				}
 				
 			} else {
@@ -195,7 +203,9 @@ function processOutput($resp = null) {
 				$variables_obj = new stdClass();
 				$variables_obj->demo  =404;
 				$obj->set_attributes = $variables_obj;
-				print_r(json_encode($obj));
+        header('Content-Type: application/json');
+				echo json_encode($obj);
+        exit;
 			}
 			
 		}
@@ -205,6 +215,8 @@ function processOutput($resp = null) {
 		array_push($parent,$msg);
 		$obj  = new stdClass();
 		$obj->messages = $parent;
-		print_r(json_encode($obj));
+    header('Content-Type: application/json');
+		echo json_encode($obj);
+    exit;
 	}
 }

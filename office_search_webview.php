@@ -20,7 +20,7 @@
     <div class="row" class="row" style="padding: 5%;background: linear-gradient(to bottom, #417AC9 0%, #072573 100%);" >
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	<a href="http://homelasvegas.com" data-slimstat="5">
-          <img  src="http://homelasvegas.com/wp-content/uploads/2016/08/GLVAR_Logo-01.png" alt="GLVAR logo icon" class="custom_logo img-responsive" style="height: 60px;margin-left:18%;">
+          <img  src="https://glvar.tier5-development.us/dg-realty/dgrealty.jpg" alt="DG-logo logo icon" class="custom_logo img-responsive" style="height: 60px;margin-left:18%;">
 	</a>
       </div>
     </div>
