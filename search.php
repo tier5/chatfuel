@@ -158,9 +158,16 @@ function processOutput($resp = null) {
                         $list_view  = new stdClass();
                         $list_view->messages[] = ['attachment' => $attachment];
                     }
+                    $btn_obj = new stdClass();
+                    $btn_obj->type ="show_block";
+                    $btn_obj->block_names = ["Find a REALTOR®"];
+                    $btn_obj->title = "Search More";
+                    $elements_btn_array[0] = $btn_obj;
+
                     $elem_objects1 = new stdClass();
                     $elem_objects1->title = "No More Result";
                     $elem_objects1->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.png";
+                    $elem_objects1->buttons = $elements_btn_array;
                     array_push($elements, $elem_objects1);
                     $payload = new stdClass();
                     $payload->template_type = "list";
