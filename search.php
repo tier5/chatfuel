@@ -103,7 +103,9 @@ function processOutput($resp = null) {
     if (count($resp)) {
         $resp_arr = [];
         foreach (json_decode($resp, true) as $record) {
-            if (strtolower($record["office_name"]) == "dg realty") $resp_arr[] = json_decode(json_encode($record, false));
+            if (isset($record["office_name"]) && strtolower($record["office_name"]) == "dg realty") {
+                $resp_arr[] = json_decode(json_encode($record, false));
+            }
         }
         $counter  = 0;
         if (isset($_GET['start'])) {
@@ -174,25 +176,6 @@ function processOutput($resp = null) {
                     header('Content-Type: application/json');
                     print_r(json_encode($list_view));
                     exit;
-                    /*if (($paginate_start == 0 || !isset($paginate_start)) && ($paginate_end == 1 || !isset($paginate_end))) {
-                        header('Content-Type: application/json');
-                        print_r(json_encode(makeListView($resp_arr, $counter, $paginate_start, $paginate_end)));
-                        exit;
-                    } elseif (($paginate_start == 1 || !isset($paginate_start)) && ($paginate_end == 2 || !isset($paginate_end))) {
-                        header('Content-Type: application/json');
-                        echo(json_encode(makeListView($resp_arr, $counter, 1, 2)));
-                        exit;
-                    } elseif (($paginate_start >= 2 || !isset($paginate_start)) && ($paginate_end >= 2 || !isset($paginate_end))) {
-                        $msg = array('text' =>  "No More Results!");
-                        $parent = array();
-                        array_push($parent,$msg);
-                        $obj  = new stdClass();
-                        $obj->messages = $parent;
-                        $variables_obj = new stdClass();
-                        $variables_obj->demo  =404;
-                        $obj->set_attributes = $variables_obj;
-                        echo(json_encode($obj));
-                    }*/
                 } elseif (array_key_exists($paginate_start, $resp_arr) && array_key_exists($paginate_end, $resp_arr)) {
                     header('Content-Type: application/json');
                     echo(json_encode(makeListView($resp_arr, $counter, $paginate_start, $paginate_end)));
