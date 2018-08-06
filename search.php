@@ -156,15 +156,21 @@ function processOutput($resp = null) {
                         $list_view  = new stdClass();
                         $list_view->messages[] = ['attachment' => $attachment];
                     }
-                    $msg = array('text' =>  "No More Results!");
-                    $parent = array();
-                    array_push($parent,$msg);
-                    $obj  = new stdClass();
-                    $obj->messages = $parent;
-                    $variables_obj = new stdClass();
-                    $variables_obj->demo  =404;
-                    $obj->set_attributes = $variables_obj;
-                    $list_view->messages[] =  $obj;
+                    $elem_objects1 = new stdClass();
+                    $elem_objects1->title = "No More Result";
+                    $elem_objects1->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.jpg";
+                    array_push($elements, $elem_objects1);
+                    $payload = new stdClass();
+                    $payload->template_type = "list";
+                    $payload->top_element_style = "large";
+                    $payload->elements = $elements;
+                    // configure chart
+                    $attachment = new stdClass();
+                    $attachment->type = "template";
+                    $attachment->payload = $payload;
+                    $list_view  = new stdClass();
+                    $list_view->messages[] = ['attachment' => $attachment];
+
                     header('Content-Type: application/json');
                     print_r(json_encode($list_view));
                     exit;
