@@ -142,7 +142,7 @@ function processOutput($resp = null) {
                         // creating element object
                         $elem_objects = new stdClass();
                         $elem_objects->title = $resp_arr[$i]->full_name;
-                        $elem_objects->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.jpg";
+                        $elem_objects->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.png";
                         $elem_objects->subtitle = $resp_arr[$i]->office_name;
                         $elem_objects->buttons = $elements_btn_array;
                         array_push($elements, $elem_objects);
@@ -160,7 +160,7 @@ function processOutput($resp = null) {
                     }
                     $elem_objects1 = new stdClass();
                     $elem_objects1->title = "No More Result";
-                    $elem_objects1->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.jpg";
+                    $elem_objects1->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.png";
                     array_push($elements, $elem_objects1);
                     $payload = new stdClass();
                     $payload->template_type = "list";
@@ -228,7 +228,7 @@ function makeListView($resp_arr, $counter, $paginate_start, $paginate_end, $elem
         // creating element object
         $elem_objects = new stdClass();
         $elem_objects->title = $resp_arr[$i]->full_name;
-        $elem_objects->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.jpg";
+        $elem_objects->image_url = "https://glvar.tier5-development.us/dg-realty/dgrealty.png";
         $elem_objects->subtitle = $resp_arr[$i]->office_name;
         $elem_objects->buttons = $elements_btn_array;
         array_push($elements, $elem_objects);
